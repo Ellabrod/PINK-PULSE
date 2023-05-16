@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+    <link rel="stylesheet" href="stylecode.css">
+<link rel="icon" href="LOGO WHITE.png">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pink pluse</title>
+</head>
+<body>
+  <div class="navbar" >
+    <a  href='home.html'>  <img id="LOGO" src="LOGO WHITE.png"s  > </a>
+    <input type="text" id="search" placeholder="search" > <button id="button2" onclick="javascript:alert('Hello World!')" ></button>
+   <li style="float:right">
+    <a  href='sigin in options.html'>  <img id="signin" src="sign in icon.png"s  ></a>
+    <a  href='createpost.html'>  <img id="post" src="post icon.png"s  > </a>
+    <a  href='home.html'>  <img id="profile" src="profile icon.png"s > </a>
+  </div>
+      
+  <!-- base nav bar code from https://www.w3schools.com/howto/howto_js_topnav.asp -->

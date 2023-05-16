@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+    <link rel="stylesheet" href="stylecode.css">
+    <link rel="scriptpage" href="scriptpage.js">
+<link rel="icon" href="LOGO WHITE.png">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pink pluse</title>
+</head>
+<body>
+  <div class="navbar" >
+    <a  href='home.html'>  <img id="LOGO" src="LOGO WHITE.png"s  > </a>
+    <input type="text" id="search" placeholder="search" > <button id="button2" onclick="javascript:alert('Hello World!')" ></button>
+   <li style="float:right">
+    <a  href='sigin in options.html'>  <img id="signin" src="sign in icon.png"s  ></a>
+    <a  href='createpost.html'>  <img id="post" src="post icon.png"s  > </a>
+    <a  href='youraccount.html'>  <img id="profile" src="profile icon.png"s > </a>
+  </div>
+<!-- base nav bar code from https://www.w3schools.com/howto/howto_js_topnav.asp -->
+
+
+  <div class="options">
+    <br>
+    <br>
+    <a href="signin.html">signin</a>
+    <p> or </p>
+    <a href="createaccount.html">create account</a>
+
+  </div>
+
+
+
+
+
+
+  <style>
+    
+
+    
+
+
+
+    .options {
+      font-family: 'Baskerville', serif;
+position: absolute;
+   top: 47%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #BF5573;
+  font-size: 30px;
+  height: 300px;
+      width: 500px;
+      background-color: rgb(255, 255, 255);
+      border: 3px solid #BF5573;
+}
+a{   color: #BF5573}
+  
+
+
+    </style>
+    
+    <script>
+      var input = document.getElementById("search");
+      input.addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          document.getElementById("button2").click();
+        }
+      })
+
+      
+      </script>
+

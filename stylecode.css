@@ -1,0 +1,56 @@
+body { background-image: url('background\ sky.png');
+  background-size: cover; }
+
+
+.navbar {
+    background-color: #F4D5E8;
+    overflow: hidden;
+    height: 15mm;
+    border-radius: 30px;
+  }
+
+  .navbar a {
+    float: left;
+    padding: 4px 6px;
+ 
+  }
+
+  #LOGO {  padding: 0px 3px 0px 0px;
+  width: 30mm;}
+  #profile { padding: 0px 0px 0px 0px;
+    width: 15mm;}
+  #signin { padding: 0px 0px 1px 0px ;width: 15mm; }
+  #post { padding: 0px 0px 0px 0px;width: 15mm; }
+
+#search {
+  margin-top: 15px;
+  width: 60mm;
+  height: 5mm;
+  float: left;
+  
+  border: 3px solid #EB819E;
+  border-radius: 30px;
+  
+}
+
+
+
+body { text-align: center;}
+
+ 
+  
+#button2 {
+  display: none;
+}
+
+::placeholder { /* ww3schools*/
+  color: #EB819E;
+  
+}
+
+
+  
+
+  /* base nav bar code from https://www.w3schools.com/howto/howto_js_topnav.asp */
+
+
