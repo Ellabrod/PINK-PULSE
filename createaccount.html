@@ -98,6 +98,7 @@
                 alert("Your account has been created!");
             })
             .catch((error) => {
+              alert("Your account has not been created, please check your password has at least 6 characters and the email is not already in use");
                 const errorCode = error.code;
                 const errorMessage = error.message;
                 console.log(errorCode + errorMessage)
