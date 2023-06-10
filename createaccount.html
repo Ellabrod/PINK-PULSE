@@ -30,8 +30,18 @@
 </div>
 
 <div id="secretContent">
-    <h2>welcome to pink pulse</h2>
+  <br><br><br>
+    <h2 id="title">welcome back to pink pulse </h2>
+    <br>
+    <h2> your email:
+      <span id="printEmail"></span></h2>
+      
+    <h2> your uid:<span id="printUid"> </span></h2>
+    <br>
+    <br>
+
     <h3>return to the homepage for instructions</h3>
+    <br>
     <button id="signOutButton">Sign Out</button>
 </div>
 
@@ -85,6 +95,9 @@
         const signUpButton = document.querySelector("#signUpButton");
         const signInButton = document.querySelector("#signInButton");
         const signOutButton = document.querySelector("#signOutButton");
+    
+      
+
 
         secretContent.style.display = 'none';
 
@@ -110,21 +123,31 @@
             const signInPassword = userPassword.value;
             signInWithEmailAndPassword(auth, signInEmail, signInPassword)
             .then((userCredential) => {
+              console.log(userCredential)
                 const user = userCredential.user;
                 alert("You have signed in successfully!");
+                document.getElementById('printEmail').innerText = firebase.auth().currentUser.uid
+               
             })
             .catch((error) => {
+              
                 const errorCode = error.code;
                 const errorMessage = error.message;
                 console.log(errorCode + errorMessage)
             })
         }
-
+       
+    
+       
         const checkAuthState = async() => {
             onAuthStateChanged(auth, user => {
                 if(user) {
+                    console.log(user.email)
+                    console.log(user.uid)
                     authForm.style.display = 'none';
                     secretContent.style.display = 'block';
+                    document.getElementById('printEmail').innerText  = user.email
+                    document.getElementById('printUid').innerText  = user.uid
                 }
                 else {
                     authForm.style.display = 'block';
@@ -145,7 +168,26 @@
 
   
   </script>
-
+<style>
+  #secretContent {
+    
+   font-family: "Times New Roman Italic", Times New Roman;
+position: absolute;
+   top: 50vh;
+  left: 90vh;
+  transform: translate(-50%, -50%);
+  color: #000000;
+  font-size: 10px;
+  height: 50vh;
+      width: 85vh;
+      background-color: rgb(255, 255, 255);
+      border: 3px solid #BF5573;
+}
+  #title {
+    color:  #BF5573;
+    font-size: 20px;
+  }
+</style>
       
   <!-- base nav bar code from https://www.w3schools.com/howto/howto_js_topnav.asp -->
 </body>
