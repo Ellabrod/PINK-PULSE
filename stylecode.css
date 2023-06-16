@@ -1,7 +1,10 @@
 body { background-image: url('background\ sky.png');
   background-size: cover; 
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  }
 
-}
 
 
 .navbar {

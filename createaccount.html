@@ -43,6 +43,38 @@
     <h3>return to the homepage for instructions</h3>
     <br>
     <button id="signOutButton">Sign Out</button>
+
+
+    <div id="login">
+      <br>
+      <h1>log in</h1>
+  
+      <h4>ID</h4> 
+      <input id="enterID" type="text"> 
+  
+      <h4>Name</h4> 
+      <input id="enterName" type="text"> 
+  
+      <h4>password</h4> 
+      <input id="enterPassword" type="text"> <br><br>
+  
+      <button id="insert">INSERT</button>
+      <button id="update">UPDATE</button>
+      <button id="remove">REMOVE</button> <br><br>
+      <br>
+  </div>
+  <br>
+  <div id="findDetails">
+    
+      <h1>Find by ID</h1>
+      <h4>ID</h4>
+      <input id="findID" type="text"> <br><br>
+      <button id="find">FIND</button>
+      <h3 id="findName" type="text"></h3>
+      <h3 id="findPassword" type="text"></h3> <br><br>
+    <br>
+    <br>
+  </div>
 </div>
 
 
@@ -83,6 +115,9 @@
     messagingSenderId: "416272222218",
     appId: "1:416272222218:web:122ee89aa428ec8d70b7f3"
   };
+
+  import {getDatabase, ref, get, set, child, update, remove}
+from "https://www.gstatic.com/firebasejs/9.18.0/firebase-database.js"
 
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
@@ -179,8 +214,9 @@
   -ms-transform: translate(-50%, -50%);
   color: #000000;
   font-size: 10px;
-  height: 50vh;
-      width: 85vh;
+margin-top: 8vh;
+height: 100vh;
+      width: 150vh;
       background-color: rgb(255, 255, 255);
       border: 3px solid #BF5573;
       text-align: center;
@@ -190,6 +226,7 @@
     color:  #BF5573;
     font-size: 20px;
   }
+  
 </style>
       
   <!-- base nav bar code from https://www.w3schools.com/howto/howto_js_topnav.asp -->
