@@ -3,6 +3,7 @@ body { background-image: url('background\ sky.png');
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
+font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
   }
 
 
@@ -12,6 +13,7 @@ body { background-image: url('background\ sky.png');
     overflow: hidden;
     height: 15mm;
     border-radius: 30px;
+   
   }
 
   .navbar a {
