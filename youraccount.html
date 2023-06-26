@@ -1,61 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
+    <link rel="stylesheet" href="stylecode.css">
+   
+<link rel="icon" href="LOGO WHITE.png">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>pink pulse ــﮩ٨ــﮩ٨ـ</title>
-    <link rel="stylesheet" href="stylecode.css">
-    <link rel="icon" href="LOGO WHITE.png">
+    <title>pink pluse</title>
 </head>
+
 <body>
-    <div class="navbar">
-        <a href='index.html'><img id="LOGO" src="LOGO WHITE.png"></a>
-        <input type="text" id="search" placeholder="search">
-        <button id="button2" onclick="javascript:alert('Hello World!')">
-            <i class="fa fa-search"></i>
-        </button>
-        <li style="float:right">
-            <a href='sigin in options.html'><img id="signin" src="sign in icon.png"></a>
-            <a href='createpost.html'><img id="post" src="post icon.png"></a>
-            <a href='youraccount.html'><img id="profile" src="profile icon.png"></a>
-        </li>
-    </div>
-    <!-- base nav bar code from https://www.w3schools.com/howto/howto_js_topnav.asp -->
-    <h1>test</h1>
-    <div id="notLogged">
-        <h3>Please log in</h3>
-        <form onsubmit="login(event)">
-            <input type="email" placeholder="email" id="email">
-            <input type="password" placeholder="password" id="password">
-            <br>
-            <br>
-            <button type="submit">submit</button>
-        </form>
-    </div>
-   
-    <div id="logged">
-        <h3> wow omg you logged in congratulations </h3>
-        <button onclick="logout()">sign out</button>
-    </div>
+  <div class="navbar" >
+    <a  href='index.html'>  <img id="LOGO" src="LOGO WHITE.png"s  > </a>
+    <input type="text" id="search" placeholder="search" > <button id="button2" onclick="javascript:alert('Hello World!')" ></button>
+   <li style="float:right">
+    <a  href='sigin in options.html'>  <img id="signin" src="sign in icon.png"s  ></a>
+    <a  href='createpost.html'>  <img id="post" src="post icon.png"s  > </a>
+    <a  href='youraccount.html'>  <img id="profile" src="profile icon.png"s > </a>
+  </div>
+      
+  <!-- base nav bar code from https://www.w3schools.com/howto/howto_js_topnav.asp -->
+  <div id="authForm">
+    <h2>Sign Up or Sign In</h2>
+    <input type="email" placeholder="email" id="userEmail">
+    <input type="password" placeholder="password" id="userPassword">  <br><br>
+    <button id="signUpButton">Sign Up</button>
+    <button id="signInButton">Sign In</button>
+   <h5>make sure your password contains at least 6 characters otherwise your account will not be proccessed and created</h5> 
+</div>
 
-    <script>
-        var input = document.getElementById("search");
-        input.addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                document.getElementById("button2").click();
-            }
-        });
-   
+<div id="secretContent">
+  <br><br><br>
+    <h2 id="title">welcome back to pink pulse </h2>
+    <br>
+    <h2> your email:
+      <span id="printEmail"></span></h2>
+      
+    <h2> your uid: <span id="printUid"> </span></h2>
+    <br>
+    <br>
+
+    <h3>return to the homepage for instructions</h3>
+    <br>
+    <button id="signOutButton">Sign Out</button>
+
+
+    <div id="login">
+      <br>
+      <h1>log in</h1>
+  
+      <h4>ID</h4> 
+      <input id="enterID" type="text"> 
+  
+      <h4>Name</h4> 
+      <input id="enterName" type="text"> 
+  
+      <h4>password</h4> 
+      <input id="enterPassword" type="text"> <br><br>
+  
+      <button id="insert">INSERT</button>
+      <button id="update">UPDATE</button>
+      <button id="remove">REMOVE</button> <br><br>
+      <br>
+  </div>
+  <br>
+  <div id="findDetails">
     
-    </script>
+      <h1>Find by ID</h1>
+      <h4>ID</h4>
+      <input id="findID" type="text"> <br><br>
+      <button id="find">FIND</button>
+      <h3 id="findName" type="text"></h3>
+      <h3 id="findPassword" type="text"></h3> <br><br>
+    <br>
+    <br>
+  </div>
+</div>
+
+
+
+
+<style>
+#secretContent {
     
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+   position: absolute;
+  top: 53%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  color: #000000;
+  font-size: 10px;
+margin-top: 8vh;
+height: 100vh;
+      width: 150vh;
+      background-color: rgb(255, 255, 255);
+      border: 3px solid #BF5573;
+      text-align: center;
+  text-decoration: none;
+}
+  #title {
+    color:  #BF5573;
+    font-size: 20px;
+  }
+  
+</style>
 
 
-    <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics.js";
+
+
+<script >
+  var input = document.getElementById("search");
+  input.addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      document.getElementById("button2").click();
+    }
+  })
+  //https://powerusers.microsoft.com/t5/Building-Power-Apps/Using-Enter-to-Search-with-input/td-p/812847 //
+  </script>
+
+
+
+
+
+
+
+  
+<script type="module" >
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyDfUrXDJizSIh6kYNL0EC9PD0qJ1_8E-vQ",
+  authDomain: "pink-plusee.firebaseapp.com",
+  databaseURL: "https://pink-plusee-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "pink-plusee",
+  storageBucket: "pink-plusee.appspot.com",
+  messagingSenderId: "416272222218",
+  appId: "1:416272222218:web:122ee89aa428ec8d70b7f3"
+};
+
+
+
+
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+import {getDatabase, ref, get, set, child, update, remove}
+from "https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js"
+
 import {
             getAuth,
             createUserWithEmailAndPassword,
@@ -64,46 +164,170 @@ import {
             signOut
         } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-auth.js";
 
-const firebaseConfig = {
-    apiKey: "AIzaSyDfUrXDJizSIh6kYNL0EC9PD0qJ1_8E-vQ",
-    authDomain: "pink-plusee.firebaseapp.com",
-    databaseURL: "https://pink-plusee-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "pink-plusee",
-    storageBucket: "pink-plusee.appspot.com",
-    messagingSenderId: "416272222218",
-    appId: "1:416272222218:web:122ee89aa428ec8d70b7f3",
-    measurementId: "G-CWKYEFSR83"
-  };
+ 
 
-  getAuth().onAuthStateChanged((user) => {
-    var notLoggedIn = document.getElementById('notLogged');
-    var loggedIn = document.getElementById('logged');
-    if (user) {
-    loggedIn.style.display = 'block'
-    notLoggedIn.style.display = 'none'
-        var uid = user.uid;
-        // ...
-    } else {
-        loggedIn.style.display = 'none'
-    notLoggedIn.style.display = 'block'
-    }
+
+const db = getDatabase();
+
+      var enterID = document.querySelector("#enterID");
+      var enterName = document.querySelector("#enterName");
+      var enterPassword = document.querySelector("#enterPassword");
+      var findID = document.querySelector("#findID");
+      var findName = document.querySelector("#findName");
+      var findPassword = document.querySelector("#findPassword");
+
+      var insertBtn = document.querySelector("#insert");
+      var updateBtn = document.querySelector("#update");
+      var removeBtn = document.querySelector("#remove");
+      var findBtn = document.querySelector("#find");
+
+      function insertData() {
+      set(ref(db, "accounts/" + enterID.value), {
+  ID: enterID.value,
+  Name: enterName.value,
+  Password: enterPassword.value
+}).then(() => {
+  alert("Your Account has been Created ☆");
+}).catch((error) => {
+  alert(error);
 });
 
 
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-
-  function login(event) {
-event.preventDefault()
   }
-  function logout() {
-  }
- 
+
+  
+
+      function findData() {
+        const dbref = ref(db);
+
+            get(child(dbref, "accounts/" + findID.value))
+            .then((snapshot)=>{
+                if(snapshot.exists()){
+                    findName.innerHTML = "Name: " + snapshot.val().Name;
+                    findPassword.innerHTML = "Password: " + snapshot.val().Password;
+                } else {
+                    alert("No data found");
+                }
+            })
+            .catch((error)=>{
+                alert(error)
+            })
+
+        
+      }
+
+      function updateData(){
+        update(ref(db, "accounts/" + enterID.value),{
+                Name: enterName.value,
+                Password: enterPassword.value
+            })
+            .then(()=>{
+                alert("account updated");
+            })
+            .catch((error)=>{
+                alert(error);
+            });
+        
+      }
+
+      function removeData() {
+        remove(ref(db, "accounts/" + enterID.value))
+            .then(()=>{
+                alert("account deleted");
+            })
+            .catch((error)=>{
+                alert(error);
+            });
+        
+      }
+
+      insertBtn.addEventListener('click', insertData)
+      updateBtn.addEventListener('click', updateData)
+      removeBtn.addEventListener('click', removeData)
+      findBtn.addEventListener('click', findData)
+
+      const userEmail = document.querySelector("#userEmail");
+        const userPassword = document.querySelector("#userPassword");
+        const authForm = document.querySelector("#authForm");
+        const secretContent = document.querySelector("#secretContent");
+        const signUpButton = document.querySelector("#signUpButton");
+        const signInButton = document.querySelector("#signInButton");
+        const signOutButton = document.querySelector("#signOutButton");
+    
+      
+
+
+        secretContent.style.display = 'none';
+
+        const userSignUp = async() => {
+            const signUpEmail = userEmail.value;
+            const signUpPassword = userPassword.value;
+            createUserWithEmailAndPassword(auth, signUpEmail, signUpPassword)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                console.log(user);
+                alert("Your account has been created!");
+            })
+            .catch((error) => {
+              alert("Your account has not been created, please check your password has at least 6 characters and the email is not already in use");
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorCode + errorMessage)
+            })
+        }
+
+        const userSignIn = async() => {
+            const signInEmail = userEmail.value;
+            const signInPassword = userPassword.value;
+            signInWithEmailAndPassword(auth, signInEmail, signInPassword)
+            .then((userCredential) => {
+              console.log(userCredential)
+                const user = userCredential.user;
+                alert("You have signed in successfully!");
+                document.getElementById('printEmail').innerText = firebase.auth().currentUser.uid
+               
+            })
+            .catch((error) => {
+              
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorCode + errorMessage)
+            })
+        }
+       
+    
+       
+        const checkAuthState = async() => {
+            onAuthStateChanged(auth, user => {
+                if(user) {
+                    console.log(user.email)
+                    console.log(user.uid)
+                    authForm.style.display = 'none';
+                    secretContent.style.display = 'block';
+                    document.getElementById('printEmail').innerText  = user.email
+                    document.getElementById('printUid').innerText  = user.uid
+                }
+                else {
+                    authForm.style.display = 'block';
+                    secretContent.style.display = 'none';
+                }
+            })
+        }
+
+        const userSignOut = async() => {
+            await signOut(auth);
+        }
+
+        checkAuthState();
+
+        signUpButton.addEventListener('click', userSignUp);
+        signInButton.addEventListener('click', userSignIn);
+        signOutButton.addEventListener('click', userSignOut);
+       
+        
+        get(child(dbref, "Users/" + idInput.value))
+  
+
 </script>
-
-
-
 </body>
 </html>

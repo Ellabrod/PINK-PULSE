@@ -36,7 +36,7 @@
     <h2> your email:
       <span id="printEmail"></span></h2>
       
-    <h2> your uid:<span id="printUid"> </span></h2>
+    <h2> your uid: <span id="printUid"> </span></h2>
     <br>
     <br>
 
@@ -91,6 +91,7 @@
 
 
 <script type="module">
+
 
   // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
@@ -200,7 +201,9 @@ from "https://www.gstatic.com/firebasejs/9.18.0/firebase-database.js"
         signUpButton.addEventListener('click', userSignUp);
         signInButton.addEventListener('click', userSignIn);
         signOutButton.addEventListener('click', userSignOut);
-
+       
+        
+        get(child(dbref, "Users/" + idInput.value))
   
   </script>
 <style>
