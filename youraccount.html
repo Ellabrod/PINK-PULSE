@@ -173,7 +173,7 @@ const db = getDatabase();
       var enterUsername = document.querySelector("#enterUsername");
       var enterBio = document.querySelector("#enterBio");
       var enterPronouns = document.querySelector("#enterPronouns");
-      var username = document.querySelector("#Username");
+      var username = document.querySelector("#username");
       var findUsername = document.querySelector("#findUsername");
       var findBio = document.querySelector("#findBio");
       var findPronouns = document.querySelector("#findPronouns");
@@ -188,7 +188,7 @@ const db = getDatabase();
   const user = auth.currentUser; // Get the current authenticated user
   const userUid = user.uid; // Retrieve the UID of the user
 
-  set(ref(db, "accounts/" + userUid.value), {
+  set(ref(db, "accounts/" + userUid), {
     Username: enterUsername.value,
     Bio: enterBio.value,
     Pronouns: enterPronouns.value
@@ -196,6 +196,13 @@ const db = getDatabase();
     .then(() => {
       alert("Your Account has been Created ☆");
     })
+    .then (() => {
+    (ref(db, "username" + enterUsername.value), {
+    UID: userUid
+   
+  })
+    })
+
     .catch((error) => {
       alert("Error: Please try again");
       console.log(error);
@@ -203,20 +210,11 @@ const db = getDatabase();
 }
 
 
-  
-
       function findData() {
-        const user = auth.currentUser; // Get the current authenticated user
-  const userUid = user.uid; // Retrieve the UID of the user
         const dbref = ref(db);
         
 
-
-
-        
-
-
-            get(child(dbref, "accounts/" + username))
+            get(child(dbref, "accounts/" + username.value))
             .then((snapshot)=>{
                 if(snapshot.exists()){
                    findUsername.innerHTML = "Username: " + snapshot.val().Username;
@@ -235,10 +233,15 @@ const db = getDatabase();
       }
 
       function updateData(){
-        update(ref(db, "accounts/" + enterID.value),{
-                Name: enterName.value,
-                Password: enterPassword.value
-            })
+
+        const user = auth.currentUser; // Get the current authenticated user
+  const userUid = user.uid; // Retrieve the UID of the user
+
+        update(ref(db, "accounts/" + userUid), {
+    Username: enterUsername.value,
+    Bio: enterBio.value,
+    Pronouns: enterPronouns.value
+  })
             .then(()=>{
                 alert("account updated");
             })
@@ -249,7 +252,9 @@ const db = getDatabase();
       }
 
       function removeData() {
-        remove(ref(db, "accounts/" + enterID.value))
+        const user = auth.currentUser; // Get the current authenticated user
+  const userUid = user.uid; // Retrieve the UID of the user
+        remove(ref(db, "accounts/" + userUid))
             .then(()=>{
                 alert("account deleted");
             })
@@ -344,11 +349,6 @@ const db = getDatabase();
         signUpButton.addEventListener('click', userSignUp);
         signInButton.addEventListener('click', userSignIn);
         signOutButton.addEventListener('click', userSignOut);
-       
-        
-      
-  
-
-</script>
+      </script>
 </body>
 </html>
