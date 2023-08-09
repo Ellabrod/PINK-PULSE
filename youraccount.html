@@ -176,7 +176,7 @@ const db = getDatabase();
       var username = document.querySelector("#Username");
       var findUsername = document.querySelector("#findUsername");
       var findBio = document.querySelector("#findBio");
-      var findPronouns = document.querySelector("#findPassword");
+      var findPronouns = document.querySelector("#findPronouns");
 
       var insertBtn = document.querySelector("#insert");
       var updateBtn = document.querySelector("#update");
@@ -188,17 +188,17 @@ const db = getDatabase();
   const user = auth.currentUser; // Get the current authenticated user
   const userUid = user.uid; // Retrieve the UID of the user
 
-  set(ref(db, "accounts/" + userUid), {
+  set(ref(db, "accounts/" + userUid.value), {
     Username: enterUsername.value,
     Bio: enterBio.value,
-    Prounouns: enterPronouns.value
+    Pronouns: enterPronouns.value
   })
     .then(() => {
       alert("Your Account has been Created ☆");
     })
     .catch((error) => {
       alert("Error: Please try again");
-      console.error(error);
+      console.log(error);
     });
 }
 
@@ -206,14 +206,22 @@ const db = getDatabase();
   
 
       function findData() {
+        const user = auth.currentUser; // Get the current authenticated user
+  const userUid = user.uid; // Retrieve the UID of the user
         const dbref = ref(db);
+        
 
-            get(child(dbref, "accounts/" + userUid))
+
+
+        
+
+
+            get(child(dbref, "accounts/" + username))
             .then((snapshot)=>{
                 if(snapshot.exists()){
                    findUsername.innerHTML = "Username: " + snapshot.val().Username;
                     findBio.innerHTML = "Bio: " + snapshot.val().Bio;
-                    findPronouns.innerHTML = "Pronouns: " + snapshot.val().Prounouns;
+                    findPronouns.innerHTML = "Pronouns: " + snapshot.val().Pronouns;
                 } else {
                     alert("No data found");
                 }
@@ -338,7 +346,7 @@ const db = getDatabase();
         signOutButton.addEventListener('click', userSignOut);
        
         
-        get(child(dbref, "Users/" + idInput.value))
+      
   
 
 </script>

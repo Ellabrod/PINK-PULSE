@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+    <link rel="stylesheet" href="stylecode.css">
+   
+<link rel="icon" href="LOGO WHITE.png">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>create account</title>
-    <link rel="stylesheet" href="stylecode.css">
-    <link rel="icon" href="LOGO WHITE.png">
-
+    <title>pink pluse</title>
 </head>
+
 <body>
   <div class="navbar" >
-    <a  href='index.html'>  <img id="LOGO" src="LOGO WHITE.png"> </a>
-    <input type="text" id="search" placeholder="search" > <button id="button2" onclick="javascript:alert('Hello World!')"></button>
+    <a  href='index.html'>  <img id="LOGO" src="LOGO WHITE.png"s  > </a>
+    <input type="text" id="search" placeholder="search" > <button id="button2" onclick="javascript:alert('Hello World!')" ></button>
    <li style="float:right">
-    <a  href='sigin in options.html'>  <img id="signin" src="sign in icon.png"></a>
-    <a  href='createpost.html'>  <img id="post" src="post icon.png"> </a>
-    <a  href='youraccount.html'>  <img id="profile" src="profile icon.png"> </a>
-   </li> <!-- add closing tag for the li element -->
-  </div> <!-- add closing tag for the div element -->
-  
+    <a  href='sigin in options.html'>  <img id="signin" src="sign in icon.png"s  ></a>
+    <a  href='createpost.html'>  <img id="post" src="post icon.png"s  > </a>
+    <a  href='youraccount.html'>  <img id="profile" src="profile icon.png"s > </a>
+  </div>
+      
+  <!-- base nav bar code from https://www.w3schools.com/howto/howto_js_topnav.asp -->
   <div id="authForm">
     <h2>Sign Up or Sign In</h2>
     <input type="email" placeholder="email" id="userEmail">
@@ -79,52 +80,177 @@
 
 
 
-  <script>
-    var input = document.getElementById("search");
-    input.addEventListener("keypress", function(event) {
-      if (event.key === "Enter") {
-        event.preventDefault();
-        document.getElementById("button2").click();
-      }
-    });
+
+<style>
+#secretContent {
+    
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+   position: absolute;
+  top: 53%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  color: #000000;
+  font-size: 10px;
+margin-top: 8vh;
+height: 100vh;
+      width: 150vh;
+      background-color: rgb(255, 255, 255);
+      border: 3px solid #BF5573;
+      text-align: center;
+  text-decoration: none;
+}
+  #title {
+    color:  #BF5573;
+    font-size: 20px;
+  }
+  
+</style>
+
+
+
+
+<script >
+  var input = document.getElementById("search");
+  input.addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      document.getElementById("button2").click();
+    }
+  })
+  //https://powerusers.microsoft.com/t5/Building-Power-Apps/Using-Enter-to-Search-with-input/td-p/812847 //
   </script>
 
 
-<script type="module">
 
 
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-  import {
+
+
+
+  
+<script type="module" >
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDfUrXDJizSIh6kYNL0EC9PD0qJ1_8E-vQ",
+  authDomain: "pink-plusee.firebaseapp.com",
+  databaseURL: "https://pink-plusee-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "pink-plusee",
+  storageBucket: "pink-plusee.appspot.com",
+  messagingSenderId: "416272222218",
+  appId: "1:416272222218:web:122ee89aa428ec8d70b7f3"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+import {getDatabase, ref, get, set, child, update, remove}
+from "https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js"
+
+import {
             getAuth,
             createUserWithEmailAndPassword,
             signInWithEmailAndPassword,
             onAuthStateChanged,
             signOut
         } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-auth.js";
-       
 
-  // Your web app's Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyDfUrXDJizSIh6kYNL0EC9PD0qJ1_8E-vQ",
-    authDomain: "pink-plusee.firebaseapp.com",
-    databaseURL: "https://pink-plusee-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "pink-plusee",
-    storageBucket: "pink-plusee.appspot.com",
-    messagingSenderId: "416272222218",
-    appId: "1:416272222218:web:122ee89aa428ec8d70b7f3"
-  };
+ 
+const db = getDatabase();
 
-  import {getDatabase, ref, get, set, child, update, remove}
-from "https://www.gstatic.com/firebasejs/9.18.0/firebase-database.js"
+      var enterID = document.querySelector("#enterID");
+      var enterName = document.querySelector("#enterName");
+      var enterPassword = document.querySelector("#enterPassword");
+      var findID = document.querySelector("#findID");
+      var findName = document.querySelector("#findName");
+      var findPassword = document.querySelector("#findPassword");
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+      var insertBtn = document.querySelector("#insert");
+      var updateBtn = document.querySelector("#update");
+      var removeBtn = document.querySelector("#remove");
+      var findBtn = document.querySelector("#find");
+  
 
-  const userEmail = document.querySelector("#userEmail");
+      function insertData() {
+      const user = auth.currentUser; // Get the current authenticated user
+      const userUid = user.uid; // Retrieve the UID of the user
+
+      set(ref(db, "accounts/" + userUid), {
+        Username: enterUsername.value,
+        Bio: enterBio.value,
+        Pronouns: enterPronouns.value
+      })
+        .then(() => {
+          alert("Your account has been created ☆");
+        })
+        .catch((error) => {
+          alert("Error: Please try again");
+          console.error(error);
+        });
+    }
+
+    function findData() {
+      const dbref = ref(db);
+     
+      const user = auth.currentUser; // Get the current authenticated user
+      const userUid = user.uid; // Retrieve the UID of the user
+
+      get(child(dbref, "accounts/" + userUid + enterUsername.value))
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            findUsername.innerHTML = "Username: " + snapshot.val().Username;
+            findBio.innerHTML = "Bio: " + snapshot.val().Bio;
+            findPronouns.innerHTML = "Pronouns: " + snapshot.val().Pronouns;
+          } else {
+            alert("No data found");
+          }
+        })
+        .catch((error) => {
+          alert("Error: Please try again");
+          console.error(error);
+        });
+    }
+
+    function updateData() {
+      const user = auth.currentUser; // Get the current authenticated user
+      const userUid = user.uid; // Retrieve the UID of the user
+
+      update(ref(db, "accounts/" + userUid), {
+        Username: enterUsername.value,
+        Bio: enterBio.value,
+        Pronouns: enterPronouns.value
+      })
+        .then(() => {
+          alert("Account updated");
+        })
+        .catch((error) => {
+          alert("Error: Please try again");
+          console.error(error);
+        });
+    }
+
+    function removeData() {
+      const user = auth.currentUser; // Get the current authenticated user
+      const userUid = user.uid; // Retrieve the UID of the user
+
+      remove(ref(db, "accounts/" + userUid))
+        .then(() => {
+          alert("Account deleted");
+        })
+        .catch((error) => {
+          alert("Error: Please try again");
+          console.error(error);
+        });
+    }
+
+
+      insertBtn.addEventListener('click', insertData)
+      updateBtn.addEventListener('click', updateData)
+      removeBtn.addEventListener('click', removeData)
+      findBtn.addEventListener('click', findData)
+
+      const userEmail = document.querySelector("#userEmail");
         const userPassword = document.querySelector("#userPassword");
         const authForm = document.querySelector("#authForm");
         const secretContent = document.querySelector("#secretContent");
@@ -133,7 +259,7 @@ from "https://www.gstatic.com/firebasejs/9.18.0/firebase-database.js"
         const signOutButton = document.querySelector("#signOutButton");
     
       
-
+     
 
         secretContent.style.display = 'none';
 
@@ -162,10 +288,11 @@ from "https://www.gstatic.com/firebasejs/9.18.0/firebase-database.js"
               console.log(userCredential)
                 const user = userCredential.user;
                 alert("You have signed in successfully!");
-                document.getElementById('printEmail').innerText = firebase.auth().currentUser.uid
+               
                
             })
             .catch((error) => {
+              alert("Your account has not been created, please check your password has at least 6 characters and the email is not already in use");
               
                 const errorCode = error.code;
                 const errorMessage = error.message;
@@ -174,10 +301,12 @@ from "https://www.gstatic.com/firebasejs/9.18.0/firebase-database.js"
         }
        
     
-       
+
+
         const checkAuthState = async() => {
             onAuthStateChanged(auth, user => {
                 if(user) {
+              
                     console.log(user.email)
                     console.log(user.uid)
                     authForm.style.display = 'none';
@@ -205,33 +334,7 @@ from "https://www.gstatic.com/firebasejs/9.18.0/firebase-database.js"
         
         get(child(dbref, "Users/" + idInput.value))
   
-  </script>
-<style>
-  #secretContent {
-    
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-   position: absolute;
-  top: 53%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  color: #000000;
-  font-size: 10px;
-margin-top: 8vh;
-height: 100vh;
-      width: 150vh;
-      background-color: rgb(255, 255, 255);
-      border: 3px solid #BF5573;
-      text-align: center;
-  text-decoration: none;
-}
-  #title {
-    color:  #BF5573;
-    font-size: 20px;
-  }
-  
-</style>
-      
-  <!-- base nav bar code from https://www.w3schools.com/howto/howto_js_topnav.asp -->
+
+</script>
 </body>
 </html>
