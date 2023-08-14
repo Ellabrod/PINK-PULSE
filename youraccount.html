@@ -19,7 +19,7 @@
     <a  href='createpost.html'>  <img id="post" src="post icon.png"s  > </a>
     <a  href='youraccount.html'>  <img id="profile" src="profile icon.png"s > </a>
   </div>
-      
+  <h5 id="areYouAuth"></h5> 
   <!-- base nav bar code from https://www.w3schools.com/howto/howto_js_topnav.asp -->
   <div id="authForm">
     <h2>Sign Up or Sign In</h2>
@@ -31,6 +31,7 @@
 </div>
 
 <div id="secretContent">
+  
   <br><br><br>
     <h2 id="title">welcome back to pink pulse </h2>
     <br>
@@ -39,7 +40,7 @@
       
     <h2> your uid: <span id="printUid"> </span></h2>
     <br>
-    <br>
+    
 
     <h3>return to the homepage for instructions</h3>
     <br>
@@ -63,6 +64,14 @@
       <button id="update">UPDATE</button>
       <button id="remove">REMOVE</button> <br><br>
       <br>
+      <br>
+      <br>
+      <input type="file" id="imageUpload">
+      <br>
+      <br>
+      <button id="uploadBtn">Upload Image</button>
+
+      <br>
   </div>
   <br>
   <div id="findDetails">
@@ -74,8 +83,10 @@
       <h3 id="findUsername" type="text"></h3>
       <h3 id="findBio" type="text"></h3>
       <h3 id="findPronouns" type="text"></h3> <br><br>
+    
     <br>
     <br>
+  
   </div>
 </div>
 
@@ -104,6 +115,10 @@ height: 100vh;
   #title {
     color:  #BF5573;
     font-size: 20px;
+  }
+
+  #imageUpload {
+    margin-left: 10vh;
   }
   
 </style>
@@ -154,7 +169,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-import {getDatabase, ref, get, set, child, update, remove}
+import {getDatabase, ref, get, set, child, update, remove, orderByChild, equalTo, query}
 from "https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js"
 
 import {
@@ -166,6 +181,7 @@ import {
         } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-auth.js";
 
  
+        import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-storage.js";
 
 
 const db = getDatabase();
@@ -177,12 +193,12 @@ const db = getDatabase();
       var findUsername = document.querySelector("#findUsername");
       var findBio = document.querySelector("#findBio");
       var findPronouns = document.querySelector("#findPronouns");
-
       var insertBtn = document.querySelector("#insert");
       var updateBtn = document.querySelector("#update");
       var removeBtn = document.querySelector("#remove");
       var findBtn = document.querySelector("#find");
-  
+      var uploadBtn = document.querySelector("#uploadBtn");
+      var areYouAuth = document.querySelector("#areYouAuth");
 
       function insertData() {
   const user = auth.currentUser; // Get the current authenticated user
@@ -295,7 +311,7 @@ const db = getDatabase();
               alert("Your account has not been created, please check your password has at least 6 characters and the email is not already in use");
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                console.log(errorCode + errorMessage)
+                console.log(errorCode + errorMessage) // write in one note about
             })
         }
 
@@ -345,10 +361,54 @@ const db = getDatabase();
         }
 
         checkAuthState();
+        
+      
 
         signUpButton.addEventListener('click', userSignUp);
         signInButton.addEventListener('click', userSignIn);
         signOutButton.addEventListener('click', userSignOut);
-      </script>
+        uploadBtn.addEventListener('click', uploadImage);
+
+        function uploadImage() {
+    const user = getAuth().currentUser;
+
+    if (user) {
+        const uid = user.uid;
+        const imageFile = document.getElementById('imageUpload').files[0];
+
+        if (imageFile) {
+            const storage = getStorage();
+            const imageStorageRef = storageRef(storage, 'userImages/' + uid); // Use the storageRef alias here
+
+            const uploadTask = uploadBytesResumable(imageStorageRef, imageFile);
+
+            uploadTask.on('state_changed', 
+                (snapshot) => {
+                    // You can use this section to show upload progress if you want
+                }, 
+                (error) => {
+                    alert('Error uploading image: ', error);
+                    console.error('Error uploading image:', error);
+                }, 
+                () => {
+                    alert('Image uploaded successfully!');
+                    console.log('Image uploaded successfully!');
+                }
+            );
+        } else {
+            alert('Please select an image to upload.');
+        }
+    } else {
+        alert('No user is currently authenticated');
+    }
+}
+
+ function authstatelog() {
+  console.log(checkAuthState())
+}
+
+areYouAuth.innerHTML = "your score is " + checkAuthState()
+
+</script>
 </body>
 </html>

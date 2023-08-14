@@ -50,14 +50,14 @@
       <br>
       <h1>log in</h1>
   
-      <h4>ID</h4> 
-      <input id="enterID" type="text"> 
+      <h4>username</h4> 
+      <input id="enterUsername" type="text"> 
   
-      <h4>Name</h4> 
-      <input id="enterName" type="text"> 
+      <h4>bio</h4> 
+      <input id="enterBio" type="text"> 
   
-      <h4>password</h4> 
-      <input id="enterPassword" type="text"> <br><br>
+      <h4>pronouns</h4> 
+      <input id="enterPronouns" type="text"> <br><br>
   
       <button id="insert">INSERT</button>
       <button id="update">UPDATE</button>
@@ -67,12 +67,13 @@
   <br>
   <div id="findDetails">
     
-      <h1>Find by ID</h1>
+      <h1>Find a account</h1>
       <h4>ID</h4>
-      <input id="findID" type="text"> <br><br>
+      <input id="username" type="text"> <br><br>
       <button id="find">FIND</button>
-      <h3 id="findName" type="text"></h3>
-      <h3 id="findPassword" type="text"></h3> <br><br>
+      <h3 id="findUsername" type="text"></h3>
+      <h3 id="findBio" type="text"></h3>
+      <h3 id="findPronouns" type="text"></h3> <br><br>
     <br>
     <br>
   </div>
@@ -129,8 +130,12 @@ height: 100vh;
 
   
 <script type="module" >
+// Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
+// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyDfUrXDJizSIh6kYNL0EC9PD0qJ1_8E-vQ",
   authDomain: "pink-plusee.firebaseapp.com",
@@ -140,6 +145,10 @@ const firebaseConfig = {
   messagingSenderId: "416272222218",
   appId: "1:416272222218:web:122ee89aa428ec8d70b7f3"
 };
+
+
+
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -157,14 +166,17 @@ import {
         } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-auth.js";
 
  
+
+
 const db = getDatabase();
 
-      var enterID = document.querySelector("#enterID");
-      var enterName = document.querySelector("#enterName");
-      var enterPassword = document.querySelector("#enterPassword");
-      var findID = document.querySelector("#findID");
-      var findName = document.querySelector("#findName");
-      var findPassword = document.querySelector("#findPassword");
+      var enterUsername = document.querySelector("#enterUsername");
+      var enterBio = document.querySelector("#enterBio");
+      var enterPronouns = document.querySelector("#enterPronouns");
+      var username = document.querySelector("#username");
+      var findUsername = document.querySelector("#findUsername");
+      var findBio = document.querySelector("#findBio");
+      var findPronouns = document.querySelector("#findPronouns");
 
       var insertBtn = document.querySelector("#insert");
       var updateBtn = document.querySelector("#update");
@@ -177,30 +189,37 @@ const db = getDatabase();
   const userUid = user.uid; // Retrieve the UID of the user
 
   set(ref(db, "accounts/" + userUid), {
-    ID: enterID.value,
-    Name: enterName.value,
-    Password: enterPassword.value
+    Username: enterUsername.value,
+    Bio: enterBio.value,
+    Pronouns: enterPronouns.value
   })
     .then(() => {
       alert("Your Account has been Created ☆");
     })
+    .then (() => {
+    (ref(db, "username" + enterUsername.value), {
+    UID: userUid
+   
+  })
+    })
+
     .catch((error) => {
       alert("Error: Please try again");
-      console.error(error);
+      console.log(error);
     });
 }
 
 
-  
-
       function findData() {
         const dbref = ref(db);
+        
 
-            get(child(dbref, "accounts/" + findID.value))
+            get(child(dbref, "accounts/" + username.value))
             .then((snapshot)=>{
                 if(snapshot.exists()){
-                    findName.innerHTML = "Name: " + snapshot.val().Name;
-                    findPassword.innerHTML = "Password: " + snapshot.val().Password;
+                   findUsername.innerHTML = "Username: " + snapshot.val().Username;
+                    findBio.innerHTML = "Bio: " + snapshot.val().Bio;
+                    findPronouns.innerHTML = "Pronouns: " + snapshot.val().Pronouns;
                 } else {
                     alert("No data found");
                 }
@@ -214,10 +233,15 @@ const db = getDatabase();
       }
 
       function updateData(){
-        update(ref(db, "accounts/" + enterID.value),{
-                Name: enterName.value,
-                Password: enterPassword.value
-            })
+
+        const user = auth.currentUser; // Get the current authenticated user
+  const userUid = user.uid; // Retrieve the UID of the user
+
+        update(ref(db, "accounts/" + userUid), {
+    Username: enterUsername.value,
+    Bio: enterBio.value,
+    Pronouns: enterPronouns.value
+  })
             .then(()=>{
                 alert("account updated");
             })
@@ -228,7 +252,9 @@ const db = getDatabase();
       }
 
       function removeData() {
-        remove(ref(db, "accounts/" + enterID.value))
+        const user = auth.currentUser; // Get the current authenticated user
+  const userUid = user.uid; // Retrieve the UID of the user
+        remove(ref(db, "accounts/" + userUid))
             .then(()=>{
                 alert("account deleted");
             })
@@ -323,11 +349,6 @@ const db = getDatabase();
         signUpButton.addEventListener('click', userSignUp);
         signInButton.addEventListener('click', userSignIn);
         signOutButton.addEventListener('click', userSignOut);
-       
-        
-    
-  
-
 </script>
 </body>
 </html>
