@@ -21,61 +21,10 @@
   </div>
       
   <!-- base nav bar code from https://www.w3schools.com/howto/howto_js_topnav.asp -->
-  <div id="authForm">
-    <h2>Sign Up or Sign In</h2>
-    <input type="email" placeholder="email" id="userEmail">
-    <input type="password" placeholder="password" id="userPassword">  <br><br>
-    <button id="signUpButton">Sign Up</button>
-    <button id="signInButton">Sign In</button>
-   <h5>make sure your password contains at least 6 characters otherwise your account will not be proccessed and created</h5> 
-</div>
-
-<div id="secretContent">
-  <br><br><br>
-    <h2 id="title">welcome back to pink pulse </h2>
-    <br>
-    <h2> your email:
-      <span id="printEmail"></span></h2>
-      
-    <h2> your uid: <span id="printUid"> </span></h2>
-    <br>
-    <br>
-
-    <h3>return to the homepage for instructions</h3>
-    <br>
-    <button id="signOutButton">Sign Out</button>
-
-
-    <div id="login">
-      <br>
-      <h1>log in</h1>
+  <img src="pink pulse pink name.png" width="500">
+    <h2 id="authForm">please sign in at sign in page</h2>
+  <h2 id="secretContent">your authenticated</h2>
   
-      <h4>ID</h4> 
-      <input id="enterID" type="text"> 
-  
-      <h4>Name</h4> 
-      <input id="enterName" type="text"> 
-  
-      <h4>password</h4> 
-      <input id="enterPassword" type="text"> <br><br>
-  
-      <button id="insert">INSERT</button>
-      <button id="update">UPDATE</button>
-      <button id="remove">REMOVE</button> <br><br>
-      <br>
-  </div>
-  <br>
-  <div id="findDetails">
-    
-      <h1>Find by ID</h1>
-      <h4>ID</h4>
-      <input id="findID" type="text"> <br><br>
-      <button id="find">FIND</button>
-      <h3 id="findName" type="text"></h3>
-      <h3 id="findPassword" type="text"></h3> <br><br>
-    <br>
-    <br>
-  </div>
 </div>
 
 
@@ -85,25 +34,13 @@
 #secretContent {
     
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-   position: absolute;
-  top: 53%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  color: #000000;
   font-size: 10px;
-margin-top: 8vh;
-height: 100vh;
-      width: 150vh;
-      background-color: rgb(255, 255, 255);
-      border: 3px solid #BF5573;
-      text-align: center;
-  text-decoration: none;
+  text-align: left;
+  position: absolute;
+  bottom: 8px;
+ 
+
 }
-  #title {
-    color:  #BF5573;
-    font-size: 20px;
-  }
   
 </style>
 
@@ -129,8 +66,12 @@ height: 100vh;
 
   
 <script type="module" >
+// Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
+// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyDfUrXDJizSIh6kYNL0EC9PD0qJ1_8E-vQ",
   authDomain: "pink-plusee.firebaseapp.com",
@@ -140,6 +81,10 @@ const firebaseConfig = {
   messagingSenderId: "416272222218",
   appId: "1:416272222218:web:122ee89aa428ec8d70b7f3"
 };
+
+
+
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -157,162 +102,25 @@ import {
         } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-auth.js";
 
  
+
+
 const db = getDatabase();
-
-      var enterID = document.querySelector("#enterID");
-      var enterName = document.querySelector("#enterName");
-      var enterPassword = document.querySelector("#enterPassword");
-      var findID = document.querySelector("#findID");
-      var findName = document.querySelector("#findName");
-      var findPassword = document.querySelector("#findPassword");
-
-      var insertBtn = document.querySelector("#insert");
-      var updateBtn = document.querySelector("#update");
-      var removeBtn = document.querySelector("#remove");
-      var findBtn = document.querySelector("#find");
-  
-
-      function insertData() {
-      const user = auth.currentUser; // Get the current authenticated user
-      const userUid = user.uid; // Retrieve the UID of the user
-
-      set(ref(db, "accounts/" + userUid), {
-        Username: enterUsername.value,
-        Bio: enterBio.value,
-        Pronouns: enterPronouns.value
-      })
-        .then(() => {
-          alert("Your account has been created ☆");
-        })
-        .catch((error) => {
-          alert("Error: Please try again");
-          console.error(error);
-        });
-    }
-
-    function findData() {
-      const dbref = ref(db);
-     
-      const user = auth.currentUser; // Get the current authenticated user
-      const userUid = user.uid; // Retrieve the UID of the user
-
-      get(child(dbref, "accounts/" + userUid + enterUsername.value))
-        .then((snapshot) => {
-          if (snapshot.exists()) {
-            findUsername.innerHTML = "Username: " + snapshot.val().Username;
-            findBio.innerHTML = "Bio: " + snapshot.val().Bio;
-            findPronouns.innerHTML = "Pronouns: " + snapshot.val().Pronouns;
-          } else {
-            alert("No data found");
-          }
-        })
-        .catch((error) => {
-          alert("Error: Please try again");
-          console.error(error);
-        });
-    }
-
-    function updateData() {
-      const user = auth.currentUser; // Get the current authenticated user
-      const userUid = user.uid; // Retrieve the UID of the user
-
-      update(ref(db, "accounts/" + userUid), {
-        Username: enterUsername.value,
-        Bio: enterBio.value,
-        Pronouns: enterPronouns.value
-      })
-        .then(() => {
-          alert("Account updated");
-        })
-        .catch((error) => {
-          alert("Error: Please try again");
-          console.error(error);
-        });
-    }
-
-    function removeData() {
-      const user = auth.currentUser; // Get the current authenticated user
-      const userUid = user.uid; // Retrieve the UID of the user
-
-      remove(ref(db, "accounts/" + userUid))
-        .then(() => {
-          alert("Account deleted");
-        })
-        .catch((error) => {
-          alert("Error: Please try again");
-          console.error(error);
-        });
-    }
-
-
-      insertBtn.addEventListener('click', insertData)
-      updateBtn.addEventListener('click', updateData)
-      removeBtn.addEventListener('click', removeData)
-      findBtn.addEventListener('click', findData)
-
-      const userEmail = document.querySelector("#userEmail");
-        const userPassword = document.querySelector("#userPassword");
+        
         const authForm = document.querySelector("#authForm");
         const secretContent = document.querySelector("#secretContent");
-        const signUpButton = document.querySelector("#signUpButton");
-        const signInButton = document.querySelector("#signInButton");
-        const signOutButton = document.querySelector("#signOutButton");
     
-      
-     
-
         secretContent.style.display = 'none';
 
-        const userSignUp = async() => {
-            const signUpEmail = userEmail.value;
-            const signUpPassword = userPassword.value;
-            createUserWithEmailAndPassword(auth, signUpEmail, signUpPassword)
-            .then((userCredential) => {
-                const user = userCredential.user;
-                console.log(user);
-                alert("Your account has been created!");
-            })
-            .catch((error) => {
-              alert("Your account has not been created, please check your password has at least 6 characters and the email is not already in use");
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.log(errorCode + errorMessage)
-            })
-        }
 
-        const userSignIn = async() => {
-            const signInEmail = userEmail.value;
-            const signInPassword = userPassword.value;
-            signInWithEmailAndPassword(auth, signInEmail, signInPassword)
-            .then((userCredential) => {
-              console.log(userCredential)
-                const user = userCredential.user;
-                alert("You have signed in successfully!");
-               
-               
-            })
-            .catch((error) => {
-              alert("Your account has not been created, please check your password has at least 6 characters and the email is not already in use");
-              
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.log(errorCode + errorMessage)
-            })
-        }
-       
-    
 
 
         const checkAuthState = async() => {
             onAuthStateChanged(auth, user => {
                 if(user) {
               
-                    console.log(user.email)
-                    console.log(user.uid)
                     authForm.style.display = 'none';
                     secretContent.style.display = 'block';
-                    document.getElementById('printEmail').innerText  = user.email
-                    document.getElementById('printUid').innerText  = user.uid
+                    
                 }
                 else {
                     authForm.style.display = 'block';
@@ -321,20 +129,10 @@ const db = getDatabase();
             })
         }
 
-        const userSignOut = async() => {
-            await signOut(auth);
-        }
-
+        
         checkAuthState();
 
-        signUpButton.addEventListener('click', userSignUp);
-        signInButton.addEventListener('click', userSignIn);
-        signOutButton.addEventListener('click', userSignOut);
-       
         
-        get(child(dbref, "Users/" + idInput.value))
-  
-
 </script>
 </body>
 </html>

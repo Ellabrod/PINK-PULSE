@@ -19,7 +19,7 @@
     <a  href='createpost.html'>  <img id="post" src="post icon.png"s  > </a>
     <a  href='youraccount.html'>  <img id="profile" src="profile icon.png"s > </a>
   </div>
-  <h5 id="areYouAuth"></h5> 
+
   <!-- base nav bar code from https://www.w3schools.com/howto/howto_js_topnav.asp -->
   <div id="authForm">
     <h2>Sign Up or Sign In</h2>
@@ -52,7 +52,7 @@
       <h1>log in</h1>
   
       <h4>username</h4> 
-      <input id="enterUsername" type="text"> 
+      <input id="enterName" type="text"> 
   
       <h4>bio</h4> 
       <input id="enterBio" type="text"> 
@@ -186,7 +186,7 @@ import {
 
 const db = getDatabase();
 
-      var enterUsername = document.querySelector("#enterUsername");
+      var enterName = document.querySelector("#enterName");
       var enterBio = document.querySelector("#enterBio");
       var enterPronouns = document.querySelector("#enterPronouns");
       var username = document.querySelector("#username");
@@ -201,29 +201,32 @@ const db = getDatabase();
       var areYouAuth = document.querySelector("#areYouAuth");
 
       function insertData() {
-  const user = auth.currentUser; // Get the current authenticated user
-  const userUid = user.uid; // Retrieve the UID of the user
+    // Get the currently authenticated user
+    const user = getAuth().currentUser;
 
-  set(ref(db, "accounts/" + userUid), {
-    Username: enterUsername.value,
-    Bio: enterBio.value,
-    Pronouns: enterPronouns.value
-  })
-    .then(() => {
-      alert("Your Account has been Created ☆");
-    })
-    .then (() => {
-    (ref(db, "username" + enterUsername.value), {
-    UID: userUid
-   
-  })
-    })
+    if (user) {
+        // Use the user's UID as the key in the database
+        const uid = user.uid;
 
-    .catch((error) => {
-      alert("Error: Please try again");
-      console.log(error);
-    });
+        set(ref(db, "users/" + uid), {
+          Name: enterName.value,
+          Bio: enterBio.value,
+          Pronouns: enterPronouns.value
+        })
+        .then(() => {
+            alert("Data added successfully");
+        })
+        .catch((error) => {
+            alert(error);
+        });
+    } else {
+        alert("No user is currently authenticated");
+    }
 }
+
+
+      
+
 
 
       function findData() {
@@ -233,7 +236,7 @@ const db = getDatabase();
             get(child(dbref, "accounts/" + username.value))
             .then((snapshot)=>{
                 if(snapshot.exists()){
-                   findUsername.innerHTML = "Username: " + snapshot.val().Username;
+                   findName.innerHTML = "Name: " + snapshot.val().Name;
                     findBio.innerHTML = "Bio: " + snapshot.val().Bio;
                     findPronouns.innerHTML = "Pronouns: " + snapshot.val().Pronouns;
                 } else {
@@ -397,17 +400,9 @@ const db = getDatabase();
             );
         } else {
             alert('Please select an image to upload.');
-        }
-    } else {
-        alert('No user is currently authenticated');
-    }
-}
+        } } }
 
- function authstatelog() {
-  console.log(checkAuthState())
-}
 
-areYouAuth.innerHTML = "your score is " + checkAuthState()
 
 </script>
 </body>

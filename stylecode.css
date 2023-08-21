@@ -4,6 +4,7 @@ body { background-image: url('background\ sky.png');
   background-attachment: fixed;
   background-size: cover;
 font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+text-align: center;
   }
 
 
@@ -29,7 +30,7 @@ font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
   #signin { padding: 0px 0px 1px 0px ;width: 15mm; }
   #post { padding: 0px 0px 0px 0px;width: 15mm; }
 
-#search {
+#findName {
   margin-top: 15px;
   width: 60mm;
   height: 5mm;
@@ -42,11 +43,11 @@ font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 
 
 
-body { text-align: center;}
+
 
  
   
-#button2 {
+#find {
   display: none;
 }
 

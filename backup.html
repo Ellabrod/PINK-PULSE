@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {text-align: center;}
+        #enterDetails {float: left; width: 50%; height: 400px; background-color: darkslategray; color: floralwhite; border-top-style: solid;}
+        #findDetails {float: left; width: 50%; height: 400px; background-color: darkslategray; color: floralwhite; border-top-style: solid;}
+        #authForm {float:left; width: 50%; height: 400px; background-color: darkslategray; color: floralwhite; border-top-style: solid;}
+        input {width: 120px;}
+
+        ul {
+  list-style-type: none;
+  margin-top: -1;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: darkslategray;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+li a:hover {
+  background-color: floralwhite;
+}
+    </style>
+</head>
+<body>
+    <ul>
+        <li><a href="Vanilla.html">Home</a></li>
+        <li><a id="signOutButton">Sign Out</a></li>
+        <li><a href="about.asp">About</a></li>
+      </ul>
+
+
+ 
+
+    <div id="authForm">
+        <h2>Sign Up or Sign In</h2>
+        <input type="email" placeholder="email" id="userEmail">
+        <input type="password" placeholder="password" id="userPassword">  <br><br>
+        <button id="signUpButton">Sign Up</button>
+        <button id="signInButton">Sign In</button>
+    </div>
+
+    <div id="secretContent">
+        <div id="enterDetails">
+            <h1>Enter details</h1>
+    
+            <h4>Name</h4> 
+            <input id="enterName" type="text"> 
+    
+            <h4>Age</h4> 
+            <input id="enterAge" type="number"> <br><br>
+    
+            <button id="insert">INSERT</button>
+            <button id="update">UPDATE</button>
+            <button id="remove">REMOVE</button> <br><br>
+            <input type="file" id="imageUpload">
+            <button id="uploadBtn">Upload Image</button>
+
+
+        </div>
+    
+        <div id="findDetails">
+            <h1>Find by Name</h1>
+            <input id="findName">
+            <button id="find">FIND</button>
+           
+            <h3 id="findAge" type="number"></h3> <br><br>
+            <div id="userImage"></div> <!-- This is the empty div for displaying the user's image -->
+        </div>
+        
+    </div>
+    
+
+    <script type="module">
+
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
+  import {
+            getAuth,
+            createUserWithEmailAndPassword,
+            signInWithEmailAndPassword,
+            onAuthStateChanged,
+            signOut
+        } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
+
+
+
+        const firebaseConfig = {
+  apiKey: "AIzaSyDfUrXDJizSIh6kYNL0EC9PD0qJ1_8E-vQ",
+  authDomain: "pink-plusee.firebaseapp.com",
+  databaseURL: "https://pink-plusee-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "pink-plusee",
+  storageBucket: "pink-plusee.appspot.com",
+  messagingSenderId: "416272222218",
+  appId: "1:416272222218:web:122ee89aa428ec8d70b7f3"
+};
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+ 
+
+   
+
+        import {getDatabase, ref, get, set, child, update, remove, orderByChild, equalTo, query}
+        from "https://www.gstatic.com/firebasejs/10.1.0/firebase-database.js";
+
+        import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-storage.js";
+        
+
+        const db = getDatabase();
+
+        var enterID = document.querySelector("#enterID");
+        const enterName = document.querySelector("#enterName");
+        const enterAge = document.querySelector("#enterAge");
+        var findID = document.querySelector("#findID");
+        const findName = document.querySelector("#findName");
+        const findAge = document.querySelector("#findAge");
+        var userEmail = document.querySelector("#userEmail");
+        var userPassword = document.querySelector("#userPassword");
+        var authForm = document.querySelector("#authForm");
+        var secretContent = document.querySelector("#secretContent");
+        var signUpButton = document.querySelector("#signUpButton");
+        var signInButton = document.querySelector("#signInButton");
+        var signOutButton = document.querySelector("#signOutButton");
+        var insertBtn = document.querySelector("#insert");
+        var updateBtn = document.querySelector("#update");
+        var removeBtn = document.querySelector("#remove");
+        var findBtn = document.querySelector("#find");
+        var uploadBtn = document.querySelector("#uploadBtn");
+
+
+
+        secretContent.style.display = 'none';
+        signOutButton.style.display = 'none';
+
+const userSignUp = async() => {
+    const signUpEmail = userEmail.value;
+    const signUpPassword = userPassword.value;
+    createUserWithEmailAndPassword(auth, signUpEmail, signUpPassword)
+    .then((userCredential) => {
+        const user = userCredential.user;
+        console.log(user);
+        alert("Your account has been created!");
+    })
+    .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode + errorMessage)
+    })
+}
+
+
+
+const userSignIn = async() => {
+    const signInEmail = userEmail.value;
+    const signInPassword = userPassword.value;
+    signInWithEmailAndPassword(auth, signInEmail, signInPassword)
+    .then((userCredential) => {
+        const user = userCredential.user;
+        alert("You have signed in successfully!");
+    })
+    .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode + errorMessage)
+    })
+}
+
+const checkAuthState = async() => {
+    onAuthStateChanged(auth, user => {
+        if(user) {
+            const myUser = user.uid
+            authForm.style.display = 'none';
+            secretContent.style.display = 'block';
+            signOutButton.style.display = 'block';
+            console.log(myUser)
+        }
+        else {
+            authForm.style.display = 'block';
+            secretContent.style.display = 'none';
+            signOutButton.style.display = 'none';
+        }
+    })
+}
+
+const userSignOut = async() => {
+    await signOut(auth);
+}
+
+checkAuthState();
+
+signUpButton.addEventListener('click', userSignUp);
+signInButton.addEventListener('click', userSignIn);
+signOutButton.addEventListener('click', userSignOut);
+insertBtn.addEventListener('click', InsertData);
+updateBtn.addEventListener('click', UpdateData);
+removeBtn.addEventListener('click', RemoveData);
+findBtn.addEventListener('click', FindData);
+uploadBtn.addEventListener('click', uploadImage);
+
+
+
+
+
+function InsertData() {
+    // Get the currently authenticated user
+    const user = getAuth().currentUser;
+
+    if (user) {
+        // Use the user's UID as the key in the database
+        const uid = user.uid;
+
+        set(ref(db, "users/" + uid), {
+            Name: enterName.value,
+            Age: enterAge.value
+        })
+        .then(() => {
+            alert("Data added successfully");
+        })
+        .catch((error) => {
+            alert(error);
+        });
+    } else {
+        alert("No user is currently authenticated");
+    }
+}
+
+
+function FindData() {
+    const dbref = ref(db, "users");
+    const nameQuery = query(dbref, orderByChild("Name"), equalTo(findName.value));
+
+    get(nameQuery)
+    .then((snapshot) => {
+        if (snapshot.exists()) {
+            const userData = snapshot.val();
+            const firstKey = Object.keys(userData)[0];
+            const firstUser = userData[firstKey];
+
+           
+            findAge.innerHTML = "Age: " + firstUser.Age;
+
+            // Fetch the user's image from Firebase Storage
+            const storage = getStorage();
+            const imagePath = 'userImages/' + firstKey;
+            const imageRef = storageRef(storage, imagePath);
+
+            getDownloadURL(imageRef).then((url) => {
+                const userImageDiv = document.getElementById('userImage');
+                userImageDiv.innerHTML = `<img src="${url}" alt="User Image" width="200">`; // Adjust width as needed
+            }).catch((error) => {
+                console.error('Error fetching image:', error);
+            });
+
+        } else {
+            alert("No data found");
+        }
+    })
+    .catch((error) => {
+        alert(error);
+    });
+}
+
+        function UpdateData(){
+            update(ref(db, "People/"+ enterID.value),{
+                Name: enterName.value,
+                Age: enterAge.value
+            })
+            .then(()=>{
+                alert("Data updated successfully");
+            })
+            .catch((error)=>{
+                alert(error);
+            });
+        }
+
+        function RemoveData(){
+            remove(ref(db, "People/"+ enterID.value))
+            .then(()=>{
+                alert("Data deleted successfully");
+            })
+            .catch((error)=>{
+                alert(error);
+            });
+        }
+
+function uploadImage() {
+    const user = getAuth().currentUser;
+
+    if (user) {
+        const uid = user.uid;
+        const imageFile = document.getElementById('imageUpload').files[0];
+
+        if (imageFile) {
+            const storage = getStorage();
+            const imageStorageRef = storageRef(storage, 'userImages/' + uid); // Use the storageRef alias here
+
+            const uploadTask = uploadBytesResumable(imageStorageRef, imageFile);
+
+            uploadTask.on('state_changed', 
+                (snapshot) => {
+                    // You can use this section to show upload progress if you want
+                }, 
+                (error) => {
+                    alert('Error uploading image: ', error);
+                }, 
+                () => {
+                    alert('Image uploaded successfully!');
+                }
+            );
+        } else {
+            alert('Please select an image to upload.');
+        }
+    } else {
+        alert('No user is currently authenticated');
+    }
+}
+
+
+
+
+      </script>
+</body>
+</html>

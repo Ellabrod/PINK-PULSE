@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <link rel="stylesheet" href="stylecode.css">
-    <link rel="scriptpage" href="scriptpage.js">
+   
 <link rel="icon" href="LOGO WHITE.png">
 <head>
     <meta charset="UTF-8">
@@ -9,36 +9,184 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>pink pulse ــﮩ٨ــﮩ٨ـ</title>
 </head>
+
 <body>
-<div class="navbar" >
+  <div class="navbar" >
     <a  href='index.html'>  <img id="LOGO" src="LOGO WHITE.png"s  > </a>
-    <input type="text" id="search" placeholder= " search " > <button id="button2" onclick="alert('Hello World!')" >  </button>
+    <input type="text" id="findName" placeholder="search" > <button id="find" ></button>
    <li style="float:right">
     <a  href='sigin in options.html'>  <img id="signin" src="sign in icon.png"s  ></a>
     <a  href='createpost.html'>  <img id="post" src="post icon.png"s  > </a>
     <a  href='youraccount.html'>  <img id="profile" src="profile icon.png"s > </a>
-
-
   </div>
+      
   <!-- base nav bar code from https://www.w3schools.com/howto/howto_js_topnav.asp -->
-
   <img src="pink pulse pink name.png" width="500">
+    <h2 id="authForm">please sign in at sign in page</h2>
+    <div id="secretContent">
+  <h2 id="authMsg" >your authenticated</h2>
+
+  <div id="findDetails">
+  
+   
+   
+    <h3 id="findPronouns" ></h3> 
+    <h3 id="findBio" ></h3>
+   <br><br>
+    <div id="userImage"></div> <!-- This is the empty div for displaying the user's image -->
+  </div>
+</div>
+  
+</div>
+
+
+
+
+
+<style>
+#authMsg {
+    
+  
+  font-size: 10px;
+  text-align: left;
+  position: absolute;
+  bottom: 8px;
+ 
+
+}
+  
+</style>
+
+
+
+
+<script >
+  var input = document.getElementById("findName");
+  input.addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      document.getElementById("find").click();
+    }
+  })
+  //https://powerusers.microsoft.com/t5/Building-Power-Apps/Using-Enter-to-Search-with-input/td-p/812847 //
+  </script>
+
+
+
+
+
+
 
   
+<script type="module" >
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyDfUrXDJizSIh6kYNL0EC9PD0qJ1_8E-vQ",
+  authDomain: "pink-plusee.firebaseapp.com",
+  databaseURL: "https://pink-plusee-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "pink-plusee",
+  storageBucket: "pink-plusee.appspot.com",
+  messagingSenderId: "416272222218",
+  appId: "1:416272222218:web:122ee89aa428ec8d70b7f3"
+};
+
+
+
+
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+import {getDatabase, ref, get, set, child, update, remove, orderByChild, equalTo, query}
+        from "https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js";
+
+        import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-storage.js";
+
+import {
+            getAuth,
+            onAuthStateChanged,
+        } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-auth.js";
+
+ 
+
+
+        const db = getDatabase();
+        const authForm = document.querySelector("#authForm");
+        const secretContent = document.querySelector("#secretContent");
+
+        
+        var findID = document.querySelector("#findID");
+        const findName = document.querySelector("#findName");
+        const findPronouns = document.querySelector("#findPronouns");
+        const findBio = document.querySelector("#findBio");
+        var findBtn = document.querySelector("#find");
+
+       
+        
+    
+        secretContent.style.display = 'none';
+
+        const checkAuthState = async() => {
+            onAuthStateChanged(auth, user => {
+                if(user) {
+              
+                    authForm.style.display = 'none';
+                    secretContent.style.display = 'block';
+                    
+                }
+                else {
+                    authForm.style.display = 'block';
+                    secretContent.style.display = 'none';
+                }
+            })
+        }
+        
+        checkAuthState();
+
+        function FindData() {
+    const dbref = ref(db, "users");
+    const nameQuery = query(dbref, orderByChild("Name"), equalTo(findName.value));
+
+    get(nameQuery)
+    .then((snapshot) => {
+        if (snapshot.exists()) {
+            const userData = snapshot.val();
+            const firstKey = Object.keys(userData)[0];
+            const firstUser = userData[firstKey];
+
+           
+            findBio.innerHTML = "Age: " + firstUser.Bio;
+            findPronouns.innerHTML = "Age: " + firstUser.Pronouns;
+
+            // Fetch the user's image from Firebase Storage
+            const storage = getStorage();
+            const imagePath = 'userImages/' + firstKey;
+            const imageRef = storageRef(storage, imagePath);
+
+            getDownloadURL(imageRef).then((url) => {
+                const userImageDiv = document.getElementById('userImage');
+                userImageDiv.innerHTML = `<img src="${url}" alt="User Image" width="200">`; // Adjust width as needed
+            }).catch((error) => {
+                console.error('Error fetching image:', error);
+            });
+
+        } else {
+            alert("No data found");
+        }
+    })
+    .catch((error) => {
+        console.log(error);
+    });
+}
+
+findBtn.addEventListener('click', FindData);
+        
+</script>
 </body>
 </html>
-
-<html>
-<body>
-
-
-<script>
-var input = document.getElementById("search");
-input.addEventListener("keypress", function(event) {
-  if (event.key === "Enter") {
-    event.preventDefault();
-    document.getElementById("button2").click();
-  }
-})
-</script>
-
