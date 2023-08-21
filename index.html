@@ -29,11 +29,13 @@
   <div id="findDetails">
   
    
-   
+    <div id="userImage"></div> <!-- This is the empty div for displaying the user's image -->
+    <h3 id="usersName" ></h3> 
     <h3 id="findPronouns" ></h3> 
     <h3 id="findBio" ></h3>
+    
    <br><br>
-    <div id="userImage"></div> <!-- This is the empty div for displaying the user's image -->
+
   </div>
 </div>
   
@@ -51,9 +53,8 @@
   text-align: left;
   position: absolute;
   bottom: 8px;
- 
-
 }
+
   
 </style>
 
@@ -125,6 +126,7 @@ import {
         const findName = document.querySelector("#findName");
         const findPronouns = document.querySelector("#findPronouns");
         const findBio = document.querySelector("#findBio");
+        const usersName = document.querySelector("#usersName");
         var findBtn = document.querySelector("#find");
 
        
@@ -160,9 +162,9 @@ import {
             const firstKey = Object.keys(userData)[0];
             const firstUser = userData[firstKey];
 
-           
-            findBio.innerHTML = "Age: " + firstUser.Bio;
-            findPronouns.innerHTML = "Age: " + firstUser.Pronouns;
+            usersName.innerHTML =  firstUser.Name;
+            findBio.innerHTML = "Bio: " + firstUser.Bio;
+            findPronouns.innerHTML = "Pronouns: " + firstUser.Pronouns;
 
             // Fetch the user's image from Firebase Storage
             const storage = getStorage();
@@ -170,7 +172,7 @@ import {
             const imageRef = storageRef(storage, imagePath);
 
             getDownloadURL(imageRef).then((url) => {
-                const userImageDiv = document.getElementById('userImage');
+                const userImageDiv = document.getElementById('userImage'); // variable declearing image entered by user
                 userImageDiv.innerHTML = `<img src="${url}" alt="User Image" width="200">`; // Adjust width as needed
             }).catch((error) => {
                 console.error('Error fetching image:', error);

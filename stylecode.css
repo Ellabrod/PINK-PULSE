@@ -51,6 +51,21 @@ text-align: center;
   display: none;
 }
 
+#search {
+  margin-top: 15px;
+  width: 60mm;
+  height: 5mm;
+  float: left;
+  
+  border: 3px solid #EB819E;
+  border-radius: 30px;
+  
+}
+
+#button2 {
+  display: none;
+}
+
 ::placeholder { /* ww3schools*/
   color: #EB819E;
   
