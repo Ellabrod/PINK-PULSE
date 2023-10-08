@@ -13,62 +13,100 @@
 <body>
   <div class="navbar" >
     <a  href='index.html'>  <img id="LOGO" src="LOGO WHITE.png"s  > </a>
-    
-   <li style="float:right">
+    <li style="float:right">
     <a  href='sigin in options.html'>  <img id="signin" src="sign in icon.png"s  ></a>
     <a  href='createpost.html'>  <img id="post" src="post icon.png"s  > </a>
     <a  href='youraccount.html'>  <img id="profile" src="profile icon.png"s > </a>
   </div>
-      
+
   <!-- base nav bar code from https://www.w3schools.com/howto/howto_js_topnav.asp -->
-
-
-
-
-<br>
-<br>
-<br>
-<br>
-  <div id="login">
-    <br>
-    <h1>log in</h1>
-
-    <h4>ID</h4> 
-    <input id="enterID" type="text"> 
-
-    <h4>Name</h4> 
-    <input id="enterName" type="text"> 
-
-    <h4>password</h4> 
-    <input id="enterPassword" type="text"> <br><br>
-
-    <button id="insert">INSERT</button>
-    <button id="update">UPDATE</button>
-    <button id="remove">REMOVE</button> <br><br>
-    <br>
+  <div id="authForm">
+    <h2>Sign Up or Sign In</h2>
+    <input type="email" placeholder="email" id="userEmail">
+    <input type="password" placeholder="password" id="userPassword">  <br><br>
+    <button id="signUpButton">Sign Up</button>
+    <button id="signInButton">Sign In</button>
+   <h5>make sure your password contains at least 6 characters otherwise your account will not be proccessed and created</h5> 
 </div>
-<br>
-<div id="findDetails">
+
+<div id="secretContent">
   
-    <h1>Find by ID</h1>
-    <h4>ID</h4>
-    <input id="findID" type="text"> <br><br>
-    <button id="find">FIND</button>
-    <h3 id="findName" type="text"></h3>
-    <h3 id="findPassword" type="text"></h3> <br><br>
+  <br><br><br>
+    
+    <div id="login">
+      <br>
+      <h1>update your details</h1>
   
+      <h4>username</h4> 
+      <input id="enterName" type="text"> 
+   
+      <h4>bio</h4> 
+      <input id="enterBio" type="text"> 
+  
+      <h4>pronouns</h4> 
+      <input id="enterPronouns" type="text"> <br><br>
+  
+     
+      <button id="update">UPDATE</button>
+      <button id="remove">REMOVE</button> <br><br>
+      <br>
+      <br>
+      <br>
+      <input type="file" id="imageUpload">
+      <br>
+      <br>
+      <button id="uploadBtn">Upload Image</button>
+
+      <br>
+  </div>
+  <br>
+  <div id="findDetails">
+    
+      <h1>Find a account</h1>
+      <h4>ID</h4>
+      <input id="username" type="text"> <br><br>
+      <button id="find">FIND</button>
+      <h3 id="findUsername" type="text"></h3>
+      <h3 id="findBio" type="text"></h3>
+      <h3 id="findPronouns" type="text"></h3> <br><br>
+    
+    <br>
+    <br>
+  
+  </div>
 </div>
 
 
 
 
 <style>
+#secretContent {
+    
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+   position: absolute;
+  top: 53%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  color: #000000;
+  font-size: 10px;
+margin-top: 8vh;
+height: 100vh;
+      width: 150vh;
+      background-color: rgb(255, 255, 255);
+      border: 3px solid #BF5573;
+      text-align: center;
+  text-decoration: none;
+}
+  #title {
+    color:  #BF5573;
+    font-size: 20px;
+  }
 
-#login { background-color: #ffffff;
-  width: 50%;
-margin-left: 25%;
-border: 3px solid #BF5573;
-color: #BF5573;}
+  #imageUpload {
+    margin-left: 10vh;
+  }
+  
 </style>
 
 
@@ -94,7 +132,7 @@ color: #BF5573;}
   
 <script type="module" >
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -109,58 +147,90 @@ const firebaseConfig = {
   appId: "1:416272222218:web:122ee89aa428ec8d70b7f3"
 };
 
+
+
+
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-import {getDatabase, ref, get, set, child, update, remove}
-from "https://www.gstatic.com/firebasejs/9.18.0/firebase-database.js"
+import {getDatabase, ref, get, set, child, update, remove, orderByChild, equalTo, query}
+from "https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js"
 
+import {
+            getAuth,
+            createUserWithEmailAndPassword,
+            signInWithEmailAndPassword,
+            onAuthStateChanged,
+            signOut
+        } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-auth.js";
 
+ 
+        import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-storage.js";
 
 
 const db = getDatabase();
 
-      var enterID = document.querySelector("#enterID");
       var enterName = document.querySelector("#enterName");
-      var enterPassword = document.querySelector("#enterPassword");
-      var findID = document.querySelector("#findID");
-      var findName = document.querySelector("#findName");
-      var findPassword = document.querySelector("#findPassword");
-
+      var enterBio = document.querySelector("#enterBio");
+      var enterPronouns = document.querySelector("#enterPronouns");
+      var username = document.querySelector("#username");
+      var findUsername = document.querySelector("#findUsername");
+      var findBio = document.querySelector("#findBio");
+      var findPronouns = document.querySelector("#findPronouns");
       var insertBtn = document.querySelector("#insert");
       var updateBtn = document.querySelector("#update");
       var removeBtn = document.querySelector("#remove");
       var findBtn = document.querySelector("#find");
+      var uploadBtn = document.querySelector("#uploadBtn");
+      var areYouAuth = document.querySelector("#areYouAuth");
 
       function insertData() {
-      set(ref(db, "accounts/" + enterID.value), {
-  ID: enterID.value,
-  Name: enterName.value,
-  Password: enterPassword.value
-}).then(() => {
-  alert("Your Account has been Created ☆");
-}).catch((error) => {
-  alert(error);
-});
+    // Get the currently authenticated user
+    const user = getAuth().currentUser;
+
+    if (user) {
+        // Use the user's UID as the key in the database
+        const uid = user.uid;
+
+        set(ref(db, "users/" + uid), {
+          Name: enterName.value,
+          Bio: enterBio.value,
+          Pronouns: enterPronouns.value
+        })
+        .then(() => {
+            alert("Data added successfully");
+        })
+        .catch((error) => {
+            alert(error);
+        });
+    } else {
+        alert("No user is currently authenticated");
+    }
+}
 
 
-  }
+      
 
-  
+
 
       function findData() {
         const dbref = ref(db);
+        
 
-            get(child(dbref, "accounts/" + findID.value))
+            get(child(dbref, "accounts/" + username.value))
             .then((snapshot)=>{
                 if(snapshot.exists()){
-                    findName.innerHTML = "Name: " + snapshot.val().Name;
-                    findPassword.innerHTML = "Password: " + snapshot.val().Password;
+                   findName.innerHTML = "Name: " + snapshot.val().Name;
+                    findBio.innerHTML = "Bio: " + snapshot.val().Bio;
+                    findPronouns.innerHTML = "Pronouns: " + snapshot.val().Pronouns;
                 } else {
                     alert("No data found");
                 }
             })
             .catch((error)=>{
+              alert("error please try again");
                 alert(error)
             })
 
@@ -168,10 +238,15 @@ const db = getDatabase();
       }
 
       function updateData(){
-        update(ref(db, "accounts/" + enterID.value),{
-                Name: enterName.value,
-                Password: enterPassword.value
-            })
+
+        const user = auth.currentUser; // Get the current authenticated user
+  const userUid = user.uid; // Retrieve the UID of the user
+
+        update(ref(db, "accounts/" + userUid), {
+    Username: enterUsername.value,
+    Bio: enterBio.value,
+    Pronouns: enterPronouns.value
+  })
             .then(()=>{
                 alert("account updated");
             })
@@ -182,7 +257,9 @@ const db = getDatabase();
       }
 
       function removeData() {
-        remove(ref(db, "accounts/" + enterID.value))
+        const user = auth.currentUser; // Get the current authenticated user
+  const userUid = user.uid; // Retrieve the UID of the user
+        remove(ref(db, "accounts/" + userUid))
             .then(()=>{
                 alert("account deleted");
             })
@@ -196,6 +273,82 @@ const db = getDatabase();
       updateBtn.addEventListener('click', updateData)
       removeBtn.addEventListener('click', removeData)
       findBtn.addEventListener('click', findData)
+
+      
+    
+      
+     
+
+        secretContent.style.display = 'none';
+
+        
+        
+       
+    
+
+
+        const checkAuthState = async() => {
+            onAuthStateChanged(auth, user => {
+                if(user) {
+              
+                    console.log(user.email)
+                    console.log(user.uid)
+                    authForm.style.display = 'none';
+                    secretContent.style.display = 'block';
+                    document.getElementById('printEmail').innerText  = user.email
+                    document.getElementById('printUid').innerText  = user.uid
+                }
+                else {
+                    authForm.style.display = 'block';
+                    secretContent.style.display = 'none';
+                }
+            })
+        }
+
+        const userSignOut = async() => {
+            await signOut(auth);
+        }
+
+        checkAuthState();
+        
+      
+
+        signUpButton.addEventListener('click', userSignUp);
+        signInButton.addEventListener('click', userSignIn);
+        signOutButton.addEventListener('click', userSignOut);
+        uploadBtn.addEventListener('click', uploadImage);
+
+        function uploadImage() {
+    const user = getAuth().currentUser;
+
+    if (user) {
+        const uid = user.uid;
+        const imageFile = document.getElementById('imageUpload').files[0];
+
+        if (imageFile) {
+            const storage = getStorage();
+            const imageStorageRef = storageRef(storage, 'userImages/' + uid); // Use the storageRef alias here
+
+            const uploadTask = uploadBytesResumable(imageStorageRef, imageFile);
+
+            uploadTask.on('state_changed', 
+                (snapshot) => {
+                    // You can use this section to show upload progress if you want
+                }, 
+                (error) => {
+                    alert('Error uploading image: ', error);
+                    console.error('Error uploading image:', error);
+                }, 
+                () => {
+                    alert('Image uploaded successfully!');
+                    console.log('Image uploaded successfully!');
+                }
+            );
+        } else {
+            alert('Please select an image to upload.');
+        } } }
+
+
 
 </script>
 </body>

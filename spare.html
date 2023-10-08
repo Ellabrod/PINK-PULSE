@@ -147,74 +147,62 @@ import {
             getAuth,
             onAuthStateChanged,
         } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-auth.js";
-
- 
-
-
-        const db = getDatabase();
-        const authForm = document.querySelector("#authForm");
-        const secretContent = document.querySelector("#secretContent");
-
         
-        var findID = document.querySelector("#findID");
-        const findName = document.querySelector("#findName");
-        const findPronouns = document.querySelector("#findPronouns");
-        const findBio = document.querySelector("#findBio");
-        const usersName = document.querySelector("#usersName");
-        const border = document.querySelector("#border");
-        const title = document.querySelector("#title");
-        var findBtn = document.querySelector("#find");
-        var nextUserBtn = document.querySelector("#nextUserBtn");
-        
+  const db = getDatabase();
+  const authForm = document.querySelector("#authForm");
+  const secretContent = document.querySelector("#secretContent");
 
-       
-        
-       
-        
-        border.style.display = 'none';
+  var findID = document.querySelector("#findID");
+  const findName = document.querySelector("#findName");
+  const findPronouns = document.querySelector("#findPronouns");
+  const findBio = document.querySelector("#findBio");
+  const usersName = document.querySelector("#usersName");
+  const border = document.querySelector("#border");
+  const title = document.querySelector("#title");
+  var findBtn = document.querySelector("#find");
+  const nextUserBtn = document.querySelector("#nextUserBtn");
+
+  border.style.display = 'none';
+  secretContent.style.display = 'none';
+
+  let userDataArray = [];
+  let currentIndex = 0; // Initialize the current index
+
+  const checkAuthState = async () => {
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        authForm.style.display = 'none';
+        secretContent.style.display = 'block';
+      } else {
+        authForm.style.display = 'block';
         secretContent.style.display = 'none';
+      }
+    });
+  }
 
-        const checkAuthState = async() => {
-            onAuthStateChanged(auth, user => {
-                if(user) {
-              
-                    authForm.style.display = 'none';
-                    secretContent.style.display = 'block';
-                    
-                }
-                else {
-                    authForm.style.display = 'block';
-                    secretContent.style.display = 'none';
-                }
-            })
-        }
-        
-        checkAuthState();
+  checkAuthState();
 
-        let usersIndex = 0;
-        
-
-
-
-        function FindData() {
+  function FindData() {
     const dbref = ref(db, "users");
     const nameQuery = query(dbref, orderByChild("Name"), equalTo(findName.value));
 
     get(nameQuery)
-    .then((snapshot) => {
+      .then((snapshot) => {
         if (snapshot.exists()) {
-            const userData = snapshot.val();
-            const firstKey = Object.keys(userData)[usersIndex];
-            const firstUser = userData[firstKey];
+          const userData = snapshot.val();
+          userDataArray = Object.values(userData); // Store user data in an array
 
-            usersName.innerHTML =  firstUser.Name;
-            findBio.innerHTML =  firstUser.Bio;
-            findPronouns.innerHTML = firstUser.Pronouns;
+          const firstUser = userDataArray[0]; // Get the first user's data
 
-            // Fetch the user's image from Firebase Storage
+          usersName.innerHTML = firstUser.Name;
+          findBio.innerHTML = firstUser.Bio;
+          findPronouns.innerHTML = firstUser.Pronouns;
+
+          // Fetch the user's image from Firebase Storage
             const storage = getStorage();
-            const imagePath = 'userImages/' + firstKey;
-            const imageRef = storageRef(storage, imagePath);
+            const user = userDataArray[currentIndex];
+            const imagePath = 'userImages/' + user.uid;
+const imageRef = storageRef(storage, imagePath);
 
             getDownloadURL(imageRef).then((url) => {
                 const userImageDiv = document.getElementById('userImage'); // variable declearing image entered by user
@@ -222,42 +210,49 @@ import {
             }).catch((error) => {
                 console.error('Error fetching image:', error);
             });
-
+          if (userDataArray.length > 0) {
+            currentIndex = 0; // Reset the current index to the first item
+            nextUser();
+          }
         } else {
-            alert("No data found");
+          alert("No data found");
         }
-    })
-    .catch((error) => {
+      })
+      .catch((error) => {
         console.log(error);
-    });
-    
-
+      });
 
     border.style.display = 'block';
     title.style.display = 'none';
-}
+  }
 
+  function nextUser() {
+    if (userDataArray.length > 0) {
+      currentIndex = (currentIndex + 1) % userDataArray.length; // Increment index and loop back if needed
 
+      const user = userDataArray[currentIndex];
 
+      usersName.innerHTML = user.Name;
+      findBio.innerHTML = user.Bio;
+      findPronouns.innerHTML = user.Pronouns;
 
+      // Fetch and display the user's image as you did before
+      const storage = getStorage();
+      const imagePath = 'userImages/' + user.uid;
+      const imageRef = storageRef(storage, imagePath);
 
+      getDownloadURL(imageRef).then((url) => {
+        const userImageDiv = document.getElementById('userImage');
+        userImageDiv.innerHTML = `<img src="${url}" alt="User Image" width="200">`;
+      }).catch((error) => {
+        console.error('Error fetching image:', error);
+      });
+    }
+  }
 
-function nextUser() {
-  usersIndex++; 
-    FindData();
-}
+  findBtn.addEventListener('click', FindData);
+  nextUserBtn.addEventListener('click', nextUser);
 
-
-
-    
-
-
-          
-
-
-findBtn.addEventListener('click', FindData);
-nextUserBtn.addEventListener('click', nextUser);
-        
 </script>
 </body>
 </html>
