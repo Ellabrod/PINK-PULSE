@@ -18,51 +18,130 @@
     <a  href='createpost.html'>  <img id="post" src="post icon.png"s  > </a>
     <a  href='youraccount.html'>  <img id="profile" src="profile icon.png"s > </a>
   </div>
-      
+
   <!-- base nav bar code from https://www.w3schools.com/howto/howto_js_topnav.asp -->
-  <img src="pink pulse pink name.png" width="500">
-    <h2 id="authForm">please sign in at sign in page</h2>
-  <h2 id="secretContent">your authenticated</h2>
-  
+  <div id="authForm">
+    <h2>Sign Up or Sign In</h2>
+    <input type="email" placeholder="email" id="userEmail">
+    <input type="password" placeholder="password" id="userPassword">  <br><br>
+    <button id="signUpButton">Sign Up</button>
+    <button id="signInButton">Sign In</button>
+   <h5>make sure your password contains at least 6 characters otherwise your account will not be proccessed and created</h5> 
 </div>
 
+<div id="quiz">
+ 
+ 
+  <h1 id="questionSpace"> </h1>
+  <h2 id="choiceSpace"></h2>
+  <input id="userInput" type="number" placeholder="  Answer with number">  
+     <button id="submitButton" >submit</button>
+     <br>
+    
+     <h2 id="notHuman"></h2>
+     
+  <div id="myDiv" >
+   
+  </div>
+    </div>
+    
+<div id="secretContent">
+  <h2 id="human"></h2>
+  <h2 id="message"></h2>
+  <br><br><br>
+    <h2 id="title">welcome back to pink pulse </h2>
+    <br>
+    <h2> your email:
+      <span id="printEmail"></span></h2>
+      
+    <h2> your uid: <span id="printUid"> </span></h2>
+    <br>
+    
+
+    <h3>return to the homepage for instructions</h3>
+    <br>
+    <button id="signOutButton">Sign Out</button>
 
 
+    <div id="login">
+      <br>
+      <h1>log in</h1>
+  
+      <h4>username</h4> 
+      <input id="enterName" type="text"> 
+  
+      <h4>bio</h4> 
+      <input id="enterBio" type="text"> 
+  
+      <h4>pronouns</h4> 
+      <input id="enterPronouns" type="text"> <br><br>
+  
+      <button id="insert">INSERT</button>
+      <button id="update">UPDATE</button>
+      <button id="remove">REMOVE</button> <br><br>
+      <br>
+      <br>
+      <br>
+      <input type="file" id="imageUpload">
+      <br>
+      <br>
+      <button id="uploadBtn">Upload Image</button>
+
+      <br>
+  </div>
+  <br>
+  
+  <div id="findDetails">
+    
+      <h1>Find a account</h1>
+      <h4>ID</h4>
+      <input id="username" type="text"> <br><br>
+      <button id="find">FIND</button>
+      <h3 id="findUsername" type="text"></h3>
+      <h3 id="findBio" type="text"></h3>
+      <h3 id="findPronouns" type="text"></h3> <br><br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+  </div>
+</div>
 
 <style>
 #secretContent {
     
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+   position: absolute;
+  top: 53%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  color: #000000;
   font-size: 10px;
-  text-align: left;
-  position: absolute;
-  bottom: 8px;
- 
-
+margin-top: 8vh;
+height: 100vh;
+      width: 150vh;
+      background-color: rgb(255, 255, 255);
+      border: 3px solid #BF5573;
+      text-align: center;
+  text-decoration: none;
 }
+  #title {
+    color:  #BF5573;
+    font-size: 20px;
+  }
+
+  #imageUpload {
+    margin-left: 10vh;
+  }
   
 </style>
-
-
-
-
-<script >
-  var input = document.getElementById("search");
-  input.addEventListener("keypress", function(event) {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      document.getElementById("button2").click();
-    }
-  })
-  //https://powerusers.microsoft.com/t5/Building-Power-Apps/Using-Enter-to-Search-with-input/td-p/812847 //
-  </script>
-
-
-
-
-
-
-
   
 <script type="module" >
 // Import the functions you need from the SDKs you need
@@ -89,7 +168,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-import {getDatabase, ref, get, set, child, update, remove}
+import {getDatabase, ref, get, set, child, update, remove, orderByChild, equalTo, query}
 from "https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js"
 
 import {
@@ -101,37 +180,349 @@ import {
         } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-auth.js";
 
  
+        import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-storage.js";
 
 
 const db = getDatabase();
+
+      var enterName = document.querySelector("#enterName");
+      var enterBio = document.querySelector("#enterBio");
+      var enterPronouns = document.querySelector("#enterPronouns");
+      var username = document.querySelector("#username");
+      var findUsername = document.querySelector("#findUsername");
+      var findBio = document.querySelector("#findBio");
+      var findPronouns = document.querySelector("#findPronouns");
+      var insertBtn = document.querySelector("#insert");
+      var updateBtn = document.querySelector("#update");
+      var removeBtn = document.querySelector("#remove");
+      var findBtn = document.querySelector("#find");
+      var uploadBtn = document.querySelector("#uploadBtn");
+      var areYouAuth = document.querySelector("#areYouAuth");
+
+      function insertData() {
+    // Get the currently authenticated user
+    const user = getAuth().currentUser;
+
+    if (user) {
+        // Use the user's UID as the key in the database
+        const uid = user.uid;
+
+        set(ref(db, "users/" + uid), {
+          Name: enterName.value,
+          Bio: enterBio.value,
+          Pronouns: enterPronouns.value
+        })
+        .then(() => {
+            alert("Data added successfully");
+        })
+        .catch((error) => {
+            alert(error);
+        });
+    } else {
+        alert("No user is currently authenticated");
+    }
+}
+
+
+      
+
+
+
+      function findData() {
+        const dbref = ref(db);
         
+
+            get(child(dbref, "accounts/" + username.value))
+            .then((snapshot)=>{
+                if(snapshot.exists()){
+                   findName.innerHTML = "Name: " + snapshot.val().Name;
+                    findBio.innerHTML = "Bio: " + snapshot.val().Bio;
+                    findPronouns.innerHTML = "Pronouns: " + snapshot.val().Pronouns;
+                } else {
+                    alert("No data found");
+                }
+            })
+            .catch((error)=>{
+              alert("error please try again");
+                alert(error)
+            })
+
+        
+      }
+
+      function updateData(){
+
+        const user = auth.currentUser; // Get the current authenticated user
+  const userUid = user.uid; // Retrieve the UID of the user
+
+        update(ref(db, "accounts/" + userUid), {
+    Username: enterUsername.value,
+    Bio: enterBio.value,
+    Pronouns: enterPronouns.value
+  })
+            .then(()=>{
+                alert("account updated");
+            })
+            .catch((error)=>{
+                alert(error);
+            });
+        
+      }
+
+      function removeData() {
+        const user = auth.currentUser; // Get the current authenticated user
+  const userUid = user.uid; // Retrieve the UID of the user
+        remove(ref(db, "accounts/" + userUid))
+            .then(()=>{
+                alert("account deleted");
+            })
+            .catch((error)=>{
+                alert(error);
+            });
+        
+      }
+
+      insertBtn.addEventListener('click', insertData)
+      updateBtn.addEventListener('click', updateData)
+      removeBtn.addEventListener('click', removeData)
+      findBtn.addEventListener('click', findData)
+
+      uploadBtn.addEventListener('click', uploadImage);
+
+        function uploadImage() {
+    const user = getAuth().currentUser;
+
+    if (user) {
+        const uid = user.uid;
+        const imageFile = document.getElementById('imageUpload').files[0];
+
+        if (imageFile) {
+            const storage = getStorage();
+            const imageStorageRef = storageRef(storage, 'userImages/' + uid); // Use the storageRef alias here
+
+            const uploadTask = uploadBytesResumable(imageStorageRef, imageFile);
+
+            uploadTask.on('state_changed', 
+                (snapshot) => {
+                    // You can use this section to show upload progress if you want
+                }, 
+                (error) => {
+                    alert('Error uploading image: ', error);
+                    console.error('Error uploading image:', error);
+                }, 
+                () => {
+                    alert('Image uploaded successfully!');
+                    console.log('Image uploaded successfully!');
+                }
+            );
+        } else {
+            alert('Please select an image to upload.');
+        } } }
+      const userEmail = document.querySelector("#userEmail");
+        const userPassword = document.querySelector("#userPassword");
         const authForm = document.querySelector("#authForm");
         const secretContent = document.querySelector("#secretContent");
+        const signUpButton = document.querySelector("#signUpButton");
+        const signInButton = document.querySelector("#signInButton");
+        const signOutButton = document.querySelector("#signOutButton");
     
+      
+     
+
         secretContent.style.display = 'none';
 
+        const userSignUp = async() => {
+            const signUpEmail = userEmail.value;
+            const signUpPassword = userPassword.value;
+            createUserWithEmailAndPassword(auth, signUpEmail, signUpPassword)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                console.log(user);
+                alert("Your account has been created!");
+                quiz.style.display = 'block';
+            })
+            .catch((error) => {
+              alert("Your account has not been created, please check your password has at least 6 characters and the email is not already in use");
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorCode + errorMessage) // write in one note about
+               
 
+            })
+        }
+
+        const userSignIn = async() => {
+            const signInEmail = userEmail.value;
+            const signInPassword = userPassword.value;
+            signInWithEmailAndPassword(auth, signInEmail, signInPassword)
+            .then((userCredential) => {
+              console.log(userCredential)
+                const user = userCredential.user;
+                alert("You have signed in successfully!");
+                secretContent.style.display = 'block';
+               
+               
+            })
+            .catch((error) => {
+              alert("Your account has not been created, please check your password has at least 6 characters and the email is not already in use");
+              
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorCode + errorMessage)
+
+             
+            })
+        }
+       
+    
 
 
         const checkAuthState = async() => {
             onAuthStateChanged(auth, user => {
                 if(user) {
               
+                    console.log(user.email)
+                    console.log(user.uid)
                     authForm.style.display = 'none';
-                    secretContent.style.display = 'block';
+       
                     
+                    
+                    document.getElementById('printEmail').innerText  = user.email
+                    document.getElementById('printUid').innerText  = user.uid
                 }
                 else {
                     authForm.style.display = 'block';
                     secretContent.style.display = 'none';
+                   
                 }
             })
         }
 
-        
-        checkAuthState();
+        const userSignOut = async() => {
+            await signOut(auth);
+        }
 
+      
         
-</script>
+      
+
+        signUpButton.addEventListener('click', userSignUp);
+        signInButton.addEventListener('click', userSignIn);
+        signOutButton.addEventListener('click', userSignOut);
+        
+
+
+        checkAuthState();
+  
+
+        quiz.style.display = 'none';
+       
+  
+
+      
+      
+            var questionSpace = document.getElementById("questionSpace")
+  var choiceSpace = document.getElementById("choiceSpace")
+  var smart = document.getElementById("smart")
+  var dumb = document.getElementById("dumb")
+  var userInput = document.getElementById("userInput"); 
+  var message = document.getElementById("message");
+  var myDiv = document.getElementById("myDiv");
+  
+  
+  
+ 
+  myDiv.style.display = 'none';
+  
+  
+  
+  var quizQuestions = [ //an array
+  {question: "what is 1+1" ,
+  choices: ["2", "4", "6"],
+  answer: "2"},
+  {question: "what is 2+2" ,
+  choices: ["4", "3", "7"],
+  answer: "4"},
+  {question: "what is 3+3" ,
+  choices: ["4", "8", "6"],
+  answer: "6"},
+  {question: "how tall is angeline" ,
+  choices: ["3ft", "4ft", "5ft"],
+  answer: "3"},
+  {question: "what is 4+4" ,
+  choices: ["8", "4", "2"],
+  answer: "8"},
+  
+  ]
+  var questionState = 0;
+  var score = 0;
+  
+  questionSpace.innerHTML = quizQuestions[questionState]['question'];
+  choiceSpace.innerHTML = quizQuestions[questionState]['choices'];
+  
+
+  
+
+  function submitQuestion() {
+  
+  if( userInput.value == "") {
+    alert("Answer the question, you egg!") }
+
+
+    else if(userInput.value == quizQuestions[questionState]['answer']) {
+      score++
+    update2()
+
+       } else{
+        update2()
+       }}
+
+  
+  function update2() {
+   
+    if(questionState == 4) {
+      userInput.style.display = "none";
+      questionSpace.style.display = "none";
+     choiceSpace.style.display = "none";
+     submitButton.style.display = "none";
+  message.innerHTML = "your score is " + score
+  
+  
+  if (score >= 2) {
+    human.innerHTML = "you are successfully been proven to be human"
+    secretContent.style.display = 'block';
+
+   
+    
+   
+
+
+
+
+
+  }
+  
+  if (score <= 2) {
+    notHuman.innerHTML = "sorry but we can not authenticate you at this time"
+    secretContent.style.display = 'none';
+    userSignOut()
+
+   
+   
+  }
+       }
+         questionState++ 
+           questionSpace.innerHTML = quizQuestions[questionState]['question'];
+           userInput.value = ""
+          
+  
+  
+  }
+  
+  submitButton.addEventListener('click', submitQuestion)
+
+         </script>
+
 </body>
 </html>
+

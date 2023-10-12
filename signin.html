@@ -20,18 +20,21 @@
   </div>
 
   <!-- base nav bar code from https://www.w3schools.com/howto/howto_js_topnav.asp -->
-  <div id="authForm">
-    <h2>Sign Up or Sign In</h2>
-    <input type="email" placeholder="email" id="userEmail">
-    <input type="password" placeholder="password" id="userPassword">  <br><br>
-    <button id="signUpButton">Sign Up</button>
-    <button id="signInButton">Sign In</button>
-   <h5>make sure your password contains at least 6 characters otherwise your account will not be proccessed and created</h5> 
-</div>
-
+  
 <div id="secretContent">
   
   <br><br><br>
+  <h2 id="title">welcome back to pink pulse </h2>
+  <br>
+  <h2> your email:
+    <span id="printEmail"></span></h2>
+    
+  <h2> your uid: <span id="printUid"> </span></h2>
+  <br>
+  
+
+  <h3>return to the homepage for instructions</h3>
+  <br>
     
     <div id="login">
       <br>
@@ -112,16 +115,7 @@ height: 100vh;
 
 
 
-<script >
-  var input = document.getElementById("search");
-  input.addEventListener("keypress", function(event) {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      document.getElementById("button2").click();
-    }
-  })
-  //https://powerusers.microsoft.com/t5/Building-Power-Apps/Using-Enter-to-Search-with-input/td-p/812847 //
-  </script>
+
 
 
 
@@ -238,14 +232,13 @@ const db = getDatabase();
       }
 
       function updateData(){
+        const user = getAuth().currentUser;
+        const uid = user.uid;
 
-        const user = auth.currentUser; // Get the current authenticated user
-  const userUid = user.uid; // Retrieve the UID of the user
-
-        update(ref(db, "accounts/" + userUid), {
-    Username: enterUsername.value,
-    Bio: enterBio.value,
-    Pronouns: enterPronouns.value
+        update(ref(db, "users/" + uid), {
+          Name: enterName.value,
+          Bio: enterBio.value,
+          Pronouns: enterPronouns.value
   })
             .then(()=>{
                 alert("account updated");
@@ -269,7 +262,7 @@ const db = getDatabase();
         
       }
 
-      insertBtn.addEventListener('click', insertData)
+      
       updateBtn.addEventListener('click', updateData)
       removeBtn.addEventListener('click', removeData)
       findBtn.addEventListener('click', findData)
@@ -293,7 +286,7 @@ const db = getDatabase();
               
                     console.log(user.email)
                     console.log(user.uid)
-                    authForm.style.display = 'none';
+               
                     secretContent.style.display = 'block';
                     document.getElementById('printEmail').innerText  = user.email
                     document.getElementById('printUid').innerText  = user.uid
@@ -313,10 +306,6 @@ const db = getDatabase();
         
       
 
-        signUpButton.addEventListener('click', userSignUp);
-        signInButton.addEventListener('click', userSignIn);
-        signOutButton.addEventListener('click', userSignOut);
-        uploadBtn.addEventListener('click', uploadImage);
 
         function uploadImage() {
     const user = getAuth().currentUser;
