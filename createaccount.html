@@ -29,8 +29,25 @@
    <h5>make sure your password contains at least 6 characters otherwise your account will not be proccessed and created</h5> 
 </div>
 
+<div id="quiz">
+ 
+ 
+  <h1 id="questionSpace"> </h1>
+  <h2 id="choiceSpace"></h2>
+  <input id="userInput" type="number" placeholder="  Answer with number">  
+     <button id="submitButton" >submit</button>
+     <br>
+    
+     <h2 id="notHuman"></h2>
+     
+  <div id="myDiv" >
+   
+  </div>
+    </div>
+    
 <div id="secretContent">
-  
+  <h2 id="human"></h2>
+  <h2 id="message"></h2>
   <br><br><br>
     <h2 id="title">welcome back to pink pulse </h2>
     <br>
@@ -41,7 +58,7 @@
     <br>
     
 
-    <h3>return to the homepage for instructions</h3>
+   
     <br>
     <button id="signOutButton">Sign Out</button>
 
@@ -51,13 +68,13 @@
       <h1>log in</h1>
   
       <h4>username</h4> 
-      <input id="enterName" type="text" maxlength="10"> 
+      <input id="enterName" type="text"> 
   
       <h4>bio</h4> 
-      <input id="enterBio" type="text" maxlength="58"> 
+      <input id="enterBio" type="text"> 
   
       <h4>pronouns</h4> 
-      <input id="enterPronouns" type="text" maxlength="20"> <br><br>
+      <input id="enterPronouns" type="text"> <br><br>
   
       <button id="insert">INSERT</button>
       <button id="update">UPDATE</button>
@@ -92,12 +109,9 @@
     <br>
     <br>
     <br>
-  
+
   </div>
 </div>
-
-
-
 
 <style>
 #secretContent {
@@ -128,27 +142,6 @@ height: 100vh;
   }
   
 </style>
-
-
-
-
-<script >
-  var input = document.getElementById("search");
-  input.addEventListener("keypress", function(event) {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      document.getElementById("button2").click();
-    }
-  })
-  //https://powerusers.microsoft.com/t5/Building-Power-Apps/Using-Enter-to-Search-with-input/td-p/812847 //
-  </script>
-
-
-
-
-
-
-
   
 <script type="module" >
 // Import the functions you need from the SDKs you need
@@ -196,9 +189,7 @@ const db = getDatabase();
       var enterBio = document.querySelector("#enterBio");
       var enterPronouns = document.querySelector("#enterPronouns");
       var username = document.querySelector("#username");
-      var findUsername = document.querySelector("#findUsername");
-      var findBio = document.querySelector("#findBio");
-      var findPronouns = document.querySelector("#findPronouns");
+  
       var insertBtn = document.querySelector("#insert");
       var updateBtn = document.querySelector("#update");
       var removeBtn = document.querySelector("#remove");
@@ -235,27 +226,6 @@ const db = getDatabase();
 
 
 
-      function findData() {
-        const dbref = ref(db);
-        
-
-            get(child(dbref, "accounts/" + username.value))
-            .then((snapshot)=>{
-                if(snapshot.exists()){
-                   findName.innerHTML = "Name: " + snapshot.val().Name;
-                    findBio.innerHTML = "Bio: " + snapshot.val().Bio;
-                    findPronouns.innerHTML = "Pronouns: " + snapshot.val().Pronouns;
-                } else {
-                    alert("No data found");
-                }
-            })
-            .catch((error)=>{
-              alert("error please try again");
-                alert(error)
-            })
-
-        
-      }
 
       function updateData(){
 
@@ -292,91 +262,9 @@ const db = getDatabase();
       insertBtn.addEventListener('click', insertData)
       updateBtn.addEventListener('click', updateData)
       removeBtn.addEventListener('click', removeData)
-      findBtn.addEventListener('click', findData)
-
-      const userEmail = document.querySelector("#userEmail");
-        const userPassword = document.querySelector("#userPassword");
-        const authForm = document.querySelector("#authForm");
-        const secretContent = document.querySelector("#secretContent");
-        const signUpButton = document.querySelector("#signUpButton");
-        const signInButton = document.querySelector("#signInButton");
-        const signOutButton = document.querySelector("#signOutButton");
-    
-      
-     
-
-        secretContent.style.display = 'none';
-
-        const userSignUp = async() => {
-            const signUpEmail = userEmail.value;
-            const signUpPassword = userPassword.value;
-            createUserWithEmailAndPassword(auth, signUpEmail, signUpPassword)
-            .then((userCredential) => {
-                const user = userCredential.user;
-                console.log(user);
-                alert("Your account has been created!");
-            })
-            .catch((error) => {
-              alert("Your account has not been created, please check your password has at least 6 characters and the email is not already in use");
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.log(errorCode + errorMessage) // write in one note about
-            })
-        }
-
-        const userSignIn = async() => {
-            const signInEmail = userEmail.value;
-            const signInPassword = userPassword.value;
-            signInWithEmailAndPassword(auth, signInEmail, signInPassword)
-            .then((userCredential) => {
-              console.log(userCredential)
-                const user = userCredential.user;
-                alert("You have signed in successfully!");
-               
-               
-            })
-            .catch((error) => {
-              alert("Your account has not been created, please check your password has at least 6 characters and the email is not already in use");
-              
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.log(errorCode + errorMessage)
-            })
-        }
-       
-    
-
-
-        const checkAuthState = async() => {
-            onAuthStateChanged(auth, user => {
-                if(user) {
-              
-                    console.log(user.email)
-                    console.log(user.uid)
-                    authForm.style.display = 'none';
-                    secretContent.style.display = 'block';
-                    document.getElementById('printEmail').innerText  = user.email
-                    document.getElementById('printUid').innerText  = user.uid
-                }
-                else {
-                    authForm.style.display = 'block';
-                    secretContent.style.display = 'none';
-                }
-            })
-        }
-
-        const userSignOut = async() => {
-            await signOut(auth);
-        }
-
-        checkAuthState();
-        
       
 
-        signUpButton.addEventListener('click', userSignUp);
-        signInButton.addEventListener('click', userSignIn);
-        signOutButton.addEventListener('click', userSignOut);
-        uploadBtn.addEventListener('click', uploadImage);
+      uploadBtn.addEventListener('click', uploadImage);
 
         function uploadImage() {
     const user = getAuth().currentUser;
@@ -407,9 +295,227 @@ const db = getDatabase();
         } else {
             alert('Please select an image to upload.');
         } } }
+      const userEmail = document.querySelector("#userEmail");
+        const userPassword = document.querySelector("#userPassword");
+        const authForm = document.querySelector("#authForm");
+        const secretContent = document.querySelector("#secretContent");
+        const signUpButton = document.querySelector("#signUpButton");
+        const signInButton = document.querySelector("#signInButton");
+        const signOutButton = document.querySelector("#signOutButton");
+        const navBar = document.querySelector("#navbar");
+    
+      
+     
+
+        secretContent.style.display = 'none';
+
+        const userSignUp = async() => {
+            const signUpEmail = userEmail.value;
+            const signUpPassword = userPassword.value;
+            createUserWithEmailAndPassword(auth, signUpEmail, signUpPassword)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                console.log(user);
+                alert("Your account has been created!");
+                userSignOut()
+            })
+            .catch((error) => {
+              alert("Your account has not been created, please check your password has at least 6 characters and the email is not already in use");
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorCode + errorMessage) // write in one note about
+               
+
+            })
+        }
+
+        const userSignIn = async() => {
+            const signInEmail = userEmail.value;
+            const signInPassword = userPassword.value;
+            signInWithEmailAndPassword(auth, signInEmail, signInPassword)
+            .then((userCredential) => {
+              console.log(userCredential)
+                const user = userCredential.user;
+                quiz.style.display = 'block';
+              navBar.style.display = 'none';
+             
+                secretContent.style.display = 'none';
+               
+               
+            })
+            .catch((error) => {
+              alert("Your account has not been created, please check your password has at least 6 characters and the email is not already in use");
+              
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorCode + errorMessage)
+
+             
+            })
+        }
+       
+    
 
 
+        const checkAuthState = async() => {
+            onAuthStateChanged(auth, user => {
+                if(user) {
+                
+              
+                    console.log(user.email)
+                    console.log(user.uid)
+                    authForm.style.display = 'none';
+                    secretContent.style.display = 'block';
+                    
+                    
+                    document.getElementById('printEmail').innerText  = user.email
+                    document.getElementById('printUid').innerText  = user.uid
+                }
+                else {
+                    authForm.style.display = 'block';
+                    secretContent.style.display = 'none';
+                   
+                }
+            })
+        }
 
-</script>
+        const userSignOut = async() => {
+            await signOut(auth);
+            alert ("you have been signed out")
+            navBar.style.display = 'block';
+            location.reload()
+            
+        }
+
+      
+        
+      
+
+        signUpButton.addEventListener('click', userSignUp);
+        signInButton.addEventListener('click', userSignIn);
+        signOutButton.addEventListener('click', userSignOut);
+        
+     
+
+        checkAuthState();
+  
+
+        quiz.style.display = 'none';
+       
+  
+
+      
+      
+            var questionSpace = document.getElementById("questionSpace")
+  var choiceSpace = document.getElementById("choiceSpace")
+  var smart = document.getElementById("smart")
+  var dumb = document.getElementById("dumb")
+  var userInput = document.getElementById("userInput"); 
+  var message = document.getElementById("message");
+  var myDiv = document.getElementById("myDiv");
+  
+  
+  
+ 
+  myDiv.style.display = 'none';
+  
+  
+  
+  var quizQuestions = [ //an array
+  {question: "what is 1+1" ,
+  choices: ["2", "4", "6"],
+  answer: "2"},
+  {question: "what is 2+2" ,
+  choices: ["4", "3", "7"],
+  answer: "4"},
+  {question: "what is 3+3" ,
+  choices: ["4", "8", "6"],
+  answer: "6"},
+  {question: "what is 5+10" ,
+  choices: ["10", "15", "5"],
+  answer: "15"},
+  {question: "what is 4+4" ,
+  choices: ["8", "4", "2"],
+  answer: "8"},
+  
+  ]
+  // sets the question score and choice to the the first question
+  // 
+  var questionState = 0;
+  var score = 0;
+  var choiceState = 0;
+  
+  questionSpace.innerHTML = quizQuestions[questionState]['question'];
+  choiceSpace.innerHTML = quizQuestions[choiceState]['choices'];
+  
+
+  
+
+  function submitQuestion() {
+  
+  if( userInput.value == "") {
+    alert("Answer the question, you egg!") }
+
+
+    else if(userInput.value == quizQuestions[questionState]['answer']) {
+      score++
+
+    update2()
+
+       } else{
+        update2()
+       }}
+
+  
+  function update2() { 
+   
+    if(questionState == 4) { //once finished questions hide quiz
+      quiz.style.display = "none";
+      navBar.style.display = "block";
+
+      
+     
+
+  
+  
+  if (score >= 2) {
+    human.innerHTML = "you are successfully been proven to be human"
+    alert("You have signed in successfully!");
+    message.innerHTML = "your score is " + score
+    secretContent.style.display = 'block';
+    
+    
+// when the user scores more then 3 (score 2) they will then be able to see the secret content
+  }
+  
+  if (score <= 2) {
+    notHuman.innerHTML = "retry"
+    secretContent.style.display = 'none';
+   
+    userSignOut()
+    
+    
+// when the user scores less then 3 (score 2) they will be signed out and unable to view to hidden content
+   
+   
+  }
+       }
+       
+       // this code changes the question and the choices every time the update2 function is ran which runs when a answer is submitted
+         questionState++ 
+         choiceState++
+           questionSpace.innerHTML = quizQuestions[questionState]['question']; // fills the question space with whatever question is detirment by the above code
+           choiceSpace.innerHTML = quizQuestions[choiceState]['choices'];// fills the choice space with whatever choice is detirment by the above code
+           userInput.value = "" // sets the input feild to emtey when the question changes 
+          
+  
+  
+  }
+  
+  submitButton.addEventListener('click', submitQuestion)
+
+         </script>
+
 </body>
 </html>
+
