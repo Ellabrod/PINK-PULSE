@@ -11,7 +11,7 @@
 </head>
 
 <body>
-  <div class="navbar" >
+  <div id="navbar" >
     <a  href='index.html'>  <img id="LOGO" src="LOGO WHITE.png"s  > </a>
     <li style="float:right">
     <a  href='sigin in options.html'>  <img id="signin" src="sign in icon.png"s  ></a>
@@ -58,7 +58,7 @@
     <br>
     
 
-    <h3>return to the homepage for instructions</h3>
+   
     <br>
     <button id="signOutButton">Sign Out</button>
 
@@ -189,9 +189,7 @@ const db = getDatabase();
       var enterBio = document.querySelector("#enterBio");
       var enterPronouns = document.querySelector("#enterPronouns");
       var username = document.querySelector("#username");
-      var findUsername = document.querySelector("#findUsername");
-      var findBio = document.querySelector("#findBio");
-      var findPronouns = document.querySelector("#findPronouns");
+  
       var insertBtn = document.querySelector("#insert");
       var updateBtn = document.querySelector("#update");
       var removeBtn = document.querySelector("#remove");
@@ -228,27 +226,6 @@ const db = getDatabase();
 
 
 
-      function findData() {
-        const dbref = ref(db);
-        
-
-            get(child(dbref, "accounts/" + username.value))
-            .then((snapshot)=>{
-                if(snapshot.exists()){
-                   findName.innerHTML = "Name: " + snapshot.val().Name;
-                    findBio.innerHTML = "Bio: " + snapshot.val().Bio;
-                    findPronouns.innerHTML = "Pronouns: " + snapshot.val().Pronouns;
-                } else {
-                    alert("No data found");
-                }
-            })
-            .catch((error)=>{
-              alert("error please try again");
-                alert(error)
-            })
-
-        
-      }
 
       function updateData(){
 
@@ -285,7 +262,7 @@ const db = getDatabase();
       insertBtn.addEventListener('click', insertData)
       updateBtn.addEventListener('click', updateData)
       removeBtn.addEventListener('click', removeData)
-      findBtn.addEventListener('click', findData)
+      
 
       uploadBtn.addEventListener('click', uploadImage);
 
@@ -325,6 +302,7 @@ const db = getDatabase();
         const signUpButton = document.querySelector("#signUpButton");
         const signInButton = document.querySelector("#signInButton");
         const signOutButton = document.querySelector("#signOutButton");
+        const navBar = document.querySelector("#navbar");
     
       
      
@@ -339,7 +317,7 @@ const db = getDatabase();
                 const user = userCredential.user;
                 console.log(user);
                 alert("Your account has been created!");
-                quiz.style.display = 'block';
+                userSignOut()
             })
             .catch((error) => {
               alert("Your account has not been created, please check your password has at least 6 characters and the email is not already in use");
@@ -358,8 +336,10 @@ const db = getDatabase();
             .then((userCredential) => {
               console.log(userCredential)
                 const user = userCredential.user;
-                alert("You have signed in successfully!");
-                secretContent.style.display = 'block';
+                quiz.style.display = 'block';
+              navBar.style.display = 'none';
+             
+                secretContent.style.display = 'none';
                
                
             })
@@ -380,11 +360,12 @@ const db = getDatabase();
         const checkAuthState = async() => {
             onAuthStateChanged(auth, user => {
                 if(user) {
+                
               
                     console.log(user.email)
                     console.log(user.uid)
                     authForm.style.display = 'none';
-       
+                    secretContent.style.display = 'block';
                     
                     
                     document.getElementById('printEmail').innerText  = user.email
@@ -400,6 +381,10 @@ const db = getDatabase();
 
         const userSignOut = async() => {
             await signOut(auth);
+            alert ("you have been signed out")
+            navBar.style.display = 'block';
+            location.reload()
+            
         }
 
       
@@ -410,7 +395,7 @@ const db = getDatabase();
         signInButton.addEventListener('click', userSignIn);
         signOutButton.addEventListener('click', userSignOut);
         
-
+     
 
         checkAuthState();
   
@@ -446,19 +431,22 @@ const db = getDatabase();
   {question: "what is 3+3" ,
   choices: ["4", "8", "6"],
   answer: "6"},
-  {question: "how tall is angeline" ,
-  choices: ["3ft", "4ft", "5ft"],
-  answer: "3"},
+  {question: "what is 5+10" ,
+  choices: ["10", "15", "5"],
+  answer: "15"},
   {question: "what is 4+4" ,
   choices: ["8", "4", "2"],
   answer: "8"},
   
   ]
+  // sets the question score and choice to the the first question
+  // 
   var questionState = 0;
   var score = 0;
+  var choiceState = 0;
   
   questionSpace.innerHTML = quizQuestions[questionState]['question'];
-  choiceSpace.innerHTML = quizQuestions[questionState]['choices'];
+  choiceSpace.innerHTML = quizQuestions[choiceState]['choices'];
   
 
   
@@ -471,6 +459,7 @@ const db = getDatabase();
 
     else if(userInput.value == quizQuestions[questionState]['answer']) {
       score++
+
     update2()
 
        } else{
@@ -478,42 +467,46 @@ const db = getDatabase();
        }}
 
   
-  function update2() {
+  function update2() { 
    
-    if(questionState == 4) {
-      userInput.style.display = "none";
-      questionSpace.style.display = "none";
-     choiceSpace.style.display = "none";
-     submitButton.style.display = "none";
-  message.innerHTML = "your score is " + score
+    if(questionState == 4) { //once finished questions hide quiz
+      quiz.style.display = "none";
+      navBar.style.display = "block";
+
+      
+     
+
   
   
   if (score >= 2) {
     human.innerHTML = "you are successfully been proven to be human"
+    alert("You have signed in successfully!");
+    message.innerHTML = "your score is " + score
     secretContent.style.display = 'block';
-
-   
     
-   
-
-
-
-
-
+    
+// when the user scores more then 3 (score 2) they will then be able to see the secret content
   }
   
   if (score <= 2) {
-    notHuman.innerHTML = "sorry but we can not authenticate you at this time"
+    notHuman.innerHTML = "retry"
     secretContent.style.display = 'none';
+   
     userSignOut()
-
+    
+    
+// when the user scores less then 3 (score 2) they will be signed out and unable to view to hidden content
    
    
   }
        }
+       
+       // this code changes the question and the choices every time the update2 function is ran which runs when a answer is submitted
          questionState++ 
-           questionSpace.innerHTML = quizQuestions[questionState]['question'];
-           userInput.value = ""
+         choiceState++
+           questionSpace.innerHTML = quizQuestions[questionState]['question']; // fills the question space with whatever question is detirment by the above code
+           choiceSpace.innerHTML = quizQuestions[choiceState]['choices'];// fills the choice space with whatever choice is detirment by the above code
+           userInput.value = "" // sets the input feild to emtey when the question changes 
           
   
   

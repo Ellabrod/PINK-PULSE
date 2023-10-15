@@ -11,7 +11,7 @@
 </head>
 
 <body>
-  <div class="navbar" >
+  <div id="navbar" >
     <a  href='index.html'>  <img id="LOGO" src="LOGO WHITE.png"s  > </a>
     <input type="text" id="findName" placeholder="search" > <button id="find" ></button>
    <li style="float:right">
@@ -104,6 +104,7 @@ position: absolute;
     }
   })
   //https://powerusers.microsoft.com/t5/Building-Power-Apps/Using-Enter-to-Search-with-input/td-p/812847 //
+  // code gotten from the sourse above which allows users to search by clicking enter instead of a button
   </script>
 
 
@@ -137,7 +138,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-
 import {getDatabase, ref, get, set, child, update, remove, orderByChild, equalTo, query}
         from "https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js";
 
@@ -150,7 +150,7 @@ import {
 
  
 
-
+// declaring variables
         const db = getDatabase();
         const authForm = document.querySelector("#authForm");
         const secretContent = document.querySelector("#secretContent");
@@ -170,27 +170,27 @@ import {
        
         
        
-        
+        // sets the border and secret content to be hidden when the page is first opened
         border.style.display = 'none';
         secretContent.style.display = 'none';
 
         const checkAuthState = async() => {
             onAuthStateChanged(auth, user => {
                 if(user) {
-              
+              // if the user is authenicated hide the uthentication form and show secret content
                     authForm.style.display = 'none';
                     secretContent.style.display = 'block';
                     
                 }
-                else {
+                else { // if user is not autheticaed show the auth form but not the secret content
                     authForm.style.display = 'block';
                     secretContent.style.display = 'none';
                 }
             })
         }
         
-        checkAuthState();
-
+        checkAuthState(); // checks if the users if authenticated
+// sets the userindex to be 0 so that user 1's data shows
         let usersIndex = 0;
         
 
@@ -211,28 +211,28 @@ import {
             findBio.innerHTML =  firstUser.Bio;
             findPronouns.innerHTML = firstUser.Pronouns;
 
-            // Fetch the user's image from Firebase Storage
+            // gets the users image from firebase storage
             const storage = getStorage();
             const imagePath = 'userImages/' + firstKey;
             const imageRef = storageRef(storage, imagePath);
 
             getDownloadURL(imageRef).then((url) => {
-                const userImageDiv = document.getElementById('userImage'); // variable declearing image entered by user
-                userImageDiv.innerHTML = `<img src="${url}" alt="User Image" width="200">`; // Adjust width as needed
+                const userImageDiv = document.getElementById('userImage'); // 
+                userImageDiv.innerHTML = `<img src="${url}" alt="User Image" width="200">`; 
             }).catch((error) => {
                 console.error('Error fetching image:', error);
             });
 
-        } else {
-            alert("No data found");
+        } else { // if no data is found a alert will run to show this
+            alert("No user found");
         }
     })
-    .catch((error) => {
+    .catch((error) => { //will tell me what the error is in console log
         console.log(error);
     });
     
 
-
+// shows border but hides title
     border.style.display = 'block';
     title.style.display = 'none';
 }
@@ -241,7 +241,7 @@ import {
 
 
 
-
+// changes the user index so that when this command is ran if there is another user with the same name there data will now be showen
 function nextUser() {
   usersIndex++; 
     FindData();
@@ -252,7 +252,7 @@ function nextUser() {
     
 
 
-          
+          // when the find data button of next user button is clicked it will the run the corrosponding command
 
 
 findBtn.addEventListener('click', FindData);

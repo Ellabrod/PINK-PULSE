@@ -11,7 +11,7 @@
 </head>
 
 <body>
-  <div class="navbar" >
+  <div id="navbar" >
     <a  href='index.html'>  <img id="LOGO" src="LOGO WHITE.png"s  > </a>
     <li style="float:right">
     <a  href='sigin in options.html'>  <img id="signin" src="sign in icon.png"s  ></a>
@@ -20,22 +20,18 @@
   </div>
 
   <!-- base nav bar code from https://www.w3schools.com/howto/howto_js_topnav.asp -->
-  
+  <div id="authForm">
+    <h1>sign in in order to access your account details</h1>
+  </div>
+
 <div id="secretContent">
   
   <br><br><br>
-  <h2 id="title">welcome back to pink pulse </h2>
-  <br>
-  <h2> your email:
-    <span id="printEmail"></span></h2>
-    
-  <h2> your uid: <span id="printUid"> </span></h2>
+  <h2 id="title">want to make a change to your account <span id="printEmail"></span>? </h2>
   <br>
   
+  
 
-  <h3>return to the homepage for instructions</h3>
-  <br>
-    
     <div id="login">
       <br>
       <h1>update your details</h1>
@@ -51,34 +47,23 @@
   
      
       <button id="update">UPDATE</button>
-      <button id="remove">REMOVE</button> <br><br>
-      <br>
-      <br>
-      <br>
-      <input type="file" id="imageUpload">
-      <br>
-      <br>
-      <button id="uploadBtn">Upload Image</button>
+
+<br>
+<br>
+<br>
+<h1>delete your details</h1>
+      <button id="remove">REMOVE DETAILS</button> <br><br>
+ 
 
       <br>
   </div>
-  <br>
-  <div id="findDetails">
-    
-      <h1>Find a account</h1>
-      <h4>ID</h4>
-      <input id="username" type="text"> <br><br>
-      <button id="find">FIND</button>
-      <h3 id="findUsername" type="text"></h3>
-      <h3 id="findBio" type="text"></h3>
-      <h3 id="findPronouns" type="text"></h3> <br><br>
-    
-    <br>
-    <br>
+  
   
   </div>
 </div>
 
+<br>
+<br>
 
 
 
@@ -87,15 +72,15 @@
     
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
    position: absolute;
-  top: 53%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   color: #000000;
   font-size: 10px;
-margin-top: 8vh;
-height: 100vh;
-      width: 150vh;
+margin-top: 3vh;
+height: 70vh;
+      width: 100vh;
       background-color: rgb(255, 255, 255);
       border: 3px solid #BF5573;
       text-align: center;
@@ -166,70 +151,24 @@ import {
 
 const db = getDatabase();
 
-      var enterName = document.querySelector("#enterName");
-      var enterBio = document.querySelector("#enterBio");
-      var enterPronouns = document.querySelector("#enterPronouns");
-      var username = document.querySelector("#username");
-      var findUsername = document.querySelector("#findUsername");
-      var findBio = document.querySelector("#findBio");
-      var findPronouns = document.querySelector("#findPronouns");
-      var insertBtn = document.querySelector("#insert");
+    
+
+    
       var updateBtn = document.querySelector("#update");
       var removeBtn = document.querySelector("#remove");
-      var findBtn = document.querySelector("#find");
-      var uploadBtn = document.querySelector("#uploadBtn");
+   
+    
       var areYouAuth = document.querySelector("#areYouAuth");
 
-      function insertData() {
-    // Get the currently authenticated user
-    const user = getAuth().currentUser;
-
-    if (user) {
-        // Use the user's UID as the key in the database
-        const uid = user.uid;
-
-        set(ref(db, "users/" + uid), {
-          Name: enterName.value,
-          Bio: enterBio.value,
-          Pronouns: enterPronouns.value
-        })
-        .then(() => {
-            alert("Data added successfully");
-        })
-        .catch((error) => {
-            alert(error);
-        });
-    } else {
-        alert("No user is currently authenticated");
-    }
-}
-
+    
 
       
 
 
 
-      function findData() {
-        const dbref = ref(db);
+     
         
-
-            get(child(dbref, "accounts/" + username.value))
-            .then((snapshot)=>{
-                if(snapshot.exists()){
-                   findName.innerHTML = "Name: " + snapshot.val().Name;
-                    findBio.innerHTML = "Bio: " + snapshot.val().Bio;
-                    findPronouns.innerHTML = "Pronouns: " + snapshot.val().Pronouns;
-                } else {
-                    alert("No data found");
-                }
-            })
-            .catch((error)=>{
-              alert("error please try again");
-                alert(error)
-            })
-
-        
-      }
+      
 
       function updateData(){
         const user = getAuth().currentUser;
@@ -250,9 +189,9 @@ const db = getDatabase();
       }
 
       function removeData() {
-        const user = auth.currentUser; // Get the current authenticated user
-  const userUid = user.uid; // Retrieve the UID of the user
-        remove(ref(db, "accounts/" + userUid))
+        const user = getAuth().currentUser;
+        const uid = user.uid;
+        remove(ref(db, "users/" + uid))
             .then(()=>{
                 alert("account deleted");
             })
@@ -265,7 +204,7 @@ const db = getDatabase();
       
       updateBtn.addEventListener('click', updateData)
       removeBtn.addEventListener('click', removeData)
-      findBtn.addEventListener('click', findData)
+ 
 
       
     
@@ -285,11 +224,12 @@ const db = getDatabase();
                 if(user) {
               
                     console.log(user.email)
-                    console.log(user.uid)
+               
                
                     secretContent.style.display = 'block';
                     document.getElementById('printEmail').innerText  = user.email
-                    document.getElementById('printUid').innerText  = user.uid
+                    authForm.style.display = 'none';
+                   
                 }
                 else {
                     authForm.style.display = 'block';
@@ -298,44 +238,14 @@ const db = getDatabase();
             })
         }
 
-        const userSignOut = async() => {
-            await signOut(auth);
-        }
+    
 
         checkAuthState();
         
       
 
 
-        function uploadImage() {
-    const user = getAuth().currentUser;
-
-    if (user) {
-        const uid = user.uid;
-        const imageFile = document.getElementById('imageUpload').files[0];
-
-        if (imageFile) {
-            const storage = getStorage();
-            const imageStorageRef = storageRef(storage, 'userImages/' + uid); // Use the storageRef alias here
-
-            const uploadTask = uploadBytesResumable(imageStorageRef, imageFile);
-
-            uploadTask.on('state_changed', 
-                (snapshot) => {
-                    // You can use this section to show upload progress if you want
-                }, 
-                (error) => {
-                    alert('Error uploading image: ', error);
-                    console.error('Error uploading image:', error);
-                }, 
-                () => {
-                    alert('Image uploaded successfully!');
-                    console.log('Image uploaded successfully!');
-                }
-            );
-        } else {
-            alert('Please select an image to upload.');
-        } } }
+       
 
 
 
