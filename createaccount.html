@@ -51,17 +51,12 @@
   <br><br><br>
     <h2 id="title">welcome back to pink pulse </h2>
    
-    
-
-   
-    <br>
-    <br>
-    <button id="signOutButton">Sign Out</button>
 
 
     <div id="login">
       <br>
-      <h1>comtinue creating your acccount by filling out the details below</h1>
+      <h1 id="text">continue creating your acccount by filling out the details below or if you have already filled these out, check out our
+         <a  href="index.html"> home page</a> to view other users information and to update these details check out our <a  href="createpost.html"> update page </a></h1>
   
       <h4>username</h4> 
       <input id="enterName" type="text" maxlength="10"> 
@@ -83,7 +78,10 @@
      
       <br>
       <br>
-     
+      <br>
+      <br>
+      <br>
+      <button id="signOutButton">Sign Out</button>
       <br>
      
 
@@ -99,7 +97,7 @@
     
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
    position: absolute;
-  top: 53%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
@@ -124,7 +122,20 @@ height: 80vh;
 
   #enterBio {
   width: 50vh;
- 
+}
+
+
+
+#signOutButton {
+
+
+  font-size: 15px;
+  width: 12vh;
+  height: 5vh;
+  cursor: pointer;
+  background-color: white; 
+  color: black; 
+  border: 2px solid #BF5573;
 
 }
   
@@ -187,8 +198,10 @@ const db = getDatabase();
       function insertData() {
     // Get the currently authenticated user
     const user = getAuth().currentUser;
+    if( enterName.value == "") {
+      alert("please enter a username") }
 
-    if (user) {
+    else if (user) {
         // Use the user's UID as the key in the database
         const uid = user.uid;
 
@@ -249,6 +262,8 @@ const db = getDatabase();
         } else {
             alert('Please select an image to upload.');
         } } }
+
+        // declaring variables
       const userEmail = document.querySelector("#userEmail");
         const userPassword = document.querySelector("#userPassword");
         const authForm = document.querySelector("#authForm");
@@ -259,12 +274,12 @@ const db = getDatabase();
         const navBar = document.querySelector("#navbar");
     
       
-     
+     // cant see secret content
 
         secretContent.style.display = 'none';
-
+// sign up user
         const userSignUp = async() => {
-            const signUpEmail = userEmail.value;
+            const signUpEmail = userEmail.value;  
             const signUpPassword = userPassword.value;
             createUserWithEmailAndPassword(auth, signUpEmail, signUpPassword)
             .then((userCredential) => {
@@ -282,13 +297,13 @@ const db = getDatabase();
 
             })
         }
-
+//sign in user
         const userSignIn = async() => {
             const signInEmail = userEmail.value;
             const signInPassword = userPassword.value;
             signInWithEmailAndPassword(auth, signInEmail, signInPassword)
             .then((userCredential) => {
-              console.log(userCredential)
+             
                 const user = userCredential.user;
                 quiz.style.display = 'block';
               navBar.style.display = 'none';
