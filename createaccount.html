@@ -50,67 +50,48 @@
   <h2 id="message"></h2>
   <br><br><br>
     <h2 id="title">welcome back to pink pulse </h2>
-    <br>
-    <h2> your email:
-      <span id="printEmail"></span></h2>
-      
-    <h2> your uid: <span id="printUid"> </span></h2>
-    <br>
+   
     
 
    
+    <br>
     <br>
     <button id="signOutButton">Sign Out</button>
 
 
     <div id="login">
       <br>
-      <h1>log in</h1>
+      <h1>comtinue creating your acccount by filling out the details below</h1>
   
       <h4>username</h4> 
-      <input id="enterName" type="text"> 
+      <input id="enterName" type="text" maxlength="10"> 
   
       <h4>bio</h4> 
-      <input id="enterBio" type="text"> 
+      <input id="enterBio" type="text" maxlength="58"> 
   
       <h4>pronouns</h4> 
-      <input id="enterPronouns" type="text"> <br><br>
+      <input id="enterPronouns" type="text" maxlength="15"> <br><br>
+
+    <br>
+    <br>
+    <input type="file" id="imageUpload">
+    <br>
+    <br>
+    <br>
   
-      <button id="insert">INSERT</button>
-      <button id="update">UPDATE</button>
-      <button id="remove">REMOVE</button> <br><br>
+      <button id="insert">Upload new account details</button>
+     
       <br>
       <br>
+     
       <br>
-      <input type="file" id="imageUpload">
-      <br>
-      <br>
-      <button id="uploadBtn">Upload Image</button>
+     
 
       <br>
   </div>
   <br>
   
-  <div id="findDetails">
-    
-      <h1>Find a account</h1>
-      <h4>ID</h4>
-      <input id="username" type="text"> <br><br>
-      <button id="find">FIND</button>
-      <h3 id="findUsername" type="text"></h3>
-      <h3 id="findBio" type="text"></h3>
-      <h3 id="findPronouns" type="text"></h3> <br><br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-
-  </div>
+  
 </div>
 
 <style>
@@ -124,9 +105,9 @@
   -ms-transform: translate(-50%, -50%);
   color: #000000;
   font-size: 10px;
-margin-top: 8vh;
-height: 100vh;
-      width: 150vh;
+margin-top: 3vh;
+height: 80vh;
+      width: 120vh;
       background-color: rgb(255, 255, 255);
       border: 3px solid #BF5573;
       text-align: center;
@@ -140,6 +121,12 @@ height: 100vh;
   #imageUpload {
     margin-left: 10vh;
   }
+
+  #enterBio {
+  width: 50vh;
+ 
+
+}
   
 </style>
   
@@ -227,55 +214,22 @@ const db = getDatabase();
 
 
 
-      function updateData(){
-
-        const user = auth.currentUser; // Get the current authenticated user
-  const userUid = user.uid; // Retrieve the UID of the user
-
-        update(ref(db, "accounts/" + userUid), {
-    Username: enterUsername.value,
-    Bio: enterBio.value,
-    Pronouns: enterPronouns.value
-  })
-            .then(()=>{
-                alert("account updated");
-            })
-            .catch((error)=>{
-                alert(error);
-            });
-        
-      }
-
-      function removeData() {
-        const user = auth.currentUser; // Get the current authenticated user
-  const userUid = user.uid; // Retrieve the UID of the user
-        remove(ref(db, "accounts/" + userUid))
-            .then(()=>{
-                alert("account deleted");
-            })
-            .catch((error)=>{
-                alert(error);
-            });
-        
-      }
-
-      insertBtn.addEventListener('click', insertData)
-      updateBtn.addEventListener('click', updateData)
-      removeBtn.addEventListener('click', removeData)
-      
-
-      uploadBtn.addEventListener('click', uploadImage);
+     
+// when the insert button is clicked both the functions insert data and upload image will run
+      insertBtn.addEventListener('click', insertData);
+      insertBtn.addEventListener('click', uploadImage);
 
         function uploadImage() {
-    const user = getAuth().currentUser;
+
+    const user = getAuth().currentUser; // declares the current user
 
     if (user) {
-        const uid = user.uid;
+        const uid = user.uid; //decleares uid as the current users uid
         const imageFile = document.getElementById('imageUpload').files[0];
 
         if (imageFile) {
-            const storage = getStorage();
-            const imageStorageRef = storageRef(storage, 'userImages/' + uid); // Use the storageRef alias here
+            const storage = getStorage();  // declares stoage means the get storage function
+            const imageStorageRef = storageRef(storage, 'userImages/' + uid); // saves the image in storage in a file called user images with the users uid as there name 
 
             const uploadTask = uploadBytesResumable(imageStorageRef, imageFile);
 
@@ -283,12 +237,12 @@ const db = getDatabase();
                 (snapshot) => {
                     // You can use this section to show upload progress if you want
                 }, 
-                (error) => {
+                (error) => {// alerts me of a error in a alert and in console
                     alert('Error uploading image: ', error);
                     console.error('Error uploading image:', error);
                 }, 
                 () => {
-                    alert('Image uploaded successfully!');
+                   // console logs when the image has been successfully added to storage
                     console.log('Image uploaded successfully!');
                 }
             );
@@ -367,9 +321,7 @@ const db = getDatabase();
                     authForm.style.display = 'none';
                     secretContent.style.display = 'block';
                     
-                    
-                    document.getElementById('printEmail').innerText  = user.email
-                    document.getElementById('printUid').innerText  = user.uid
+                   
                 }
                 else {
                     authForm.style.display = 'block';
