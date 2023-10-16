@@ -46,7 +46,7 @@
     </div>
     
 <div id="secretContent">
-  <h2 id="human"></h2>
+ 
   <h2 id="message"></h2>
   <br><br><br>
     <h2 id="title">welcome back to pink pulse </h2>
@@ -59,7 +59,7 @@
          <a  href="index.html"> home page</a> to view other users information and to update these details check out our <a  href="createpost.html"> update page </a></h1>
   
       <h4>username</h4> 
-      <input id="enterName" type="text" maxlength="10"> 
+      <input id="enterName" type="text" maxlength="20"> 
   
       <h4>bio</h4> 
       <input id="enterBio" type="text" maxlength="58"> 
@@ -445,10 +445,10 @@ const db = getDatabase();
 
   
   
-  if (score >= 2) {
-    human.innerHTML = "you are successfully been proven to be human"
+  if (score > 2) {
+  
     alert("You have signed in successfully!");
-    message.innerHTML = "your score is " + score
+    message.innerHTML = "you have proven you are human with a score of " + score
     secretContent.style.display = 'block';
     
     
@@ -457,7 +457,7 @@ const db = getDatabase();
   
   if (score <= 2) {
     notHuman.innerHTML = "retry"
-    secretContent.style.display = 'none';
+    
    
     userSignOut()
     
