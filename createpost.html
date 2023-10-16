@@ -152,11 +152,10 @@ import {
 const db = getDatabase();
 
     
-
+// declaring variables
     
       var updateBtn = document.querySelector("#update");
       var removeBtn = document.querySelector("#remove");
-   
     
       var areYouAuth = document.querySelector("#areYouAuth");
 
@@ -173,25 +172,27 @@ const db = getDatabase();
       function updateData(){
         const user = getAuth().currentUser;
         const uid = user.uid;
-
+// update the users information from the user folder under there uid
         update(ref(db, "users/" + uid), {
           Name: enterName.value,
           Bio: enterBio.value,
           Pronouns: enterPronouns.value
   })
-            .then(()=>{
+            .then(()=>{ // if update successful show alert
                 alert("account updated");
             })
             .catch((error)=>{
                 alert(error);
+                // if error show error in alert
             });
         
       }
 
-      function removeData() {
+      function removeData() { 
+        // declaring user and uid
         const user = getAuth().currentUser;
         const uid = user.uid;
-        remove(ref(db, "users/" + uid))
+        remove(ref(db, "users/" + uid)) // remove the data from the user folder under the users uid
             .then(()=>{
                 alert("account deleted");
             })
@@ -224,7 +225,7 @@ const db = getDatabase();
                 if(user) {
               
                     console.log(user.email)
-               
+               // console log and print the users email and if auth show secret content and hude auth form
                
                     secretContent.style.display = 'block';
                     document.getElementById('printEmail').innerText  = user.email
@@ -232,6 +233,7 @@ const db = getDatabase();
                    
                 }
                 else {
+                  // if not auth show auth form and hide secret content
                     authForm.style.display = 'block';
                     secretContent.style.display = 'none';
                 }
@@ -239,7 +241,7 @@ const db = getDatabase();
         }
 
     
-
+// runs the function to check the users auth state
         checkAuthState();
         
       

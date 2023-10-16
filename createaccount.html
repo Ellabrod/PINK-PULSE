@@ -182,7 +182,7 @@ import {
 
 
 const db = getDatabase();
-
+// declaring variables
       var enterName = document.querySelector("#enterName");
       var enterBio = document.querySelector("#enterBio");
       var enterPronouns = document.querySelector("#enterPronouns");
@@ -327,9 +327,9 @@ const db = getDatabase();
 
 
         const checkAuthState = async() => {
-            onAuthStateChanged(auth, user => {
+            onAuthStateChanged(auth, user => { 
                 if(user) {
-                
+                // if user authenticated state changes print the email and uid in console log and show the secret content while hidng the auth form
               
                     console.log(user.email)
                     console.log(user.uid)
@@ -338,7 +338,7 @@ const db = getDatabase();
                     
                    
                 }
-                else {
+                else {  // if not auth hide secret content and show auth form
                     authForm.style.display = 'block';
                     secretContent.style.display = 'none';
                    
@@ -351,6 +351,7 @@ const db = getDatabase();
             alert ("you have been signed out")
             navBar.style.display = 'block';
             location.reload()
+            // when a user is signed out reload there page and show the nav bar and a alert
             
         }
 
@@ -446,7 +447,7 @@ const db = getDatabase();
   
   
   if (score > 2) {
-  
+
     alert("You have signed in successfully!");
     message.innerHTML = "you have proven you are human with a score of " + score
     secretContent.style.display = 'block';
