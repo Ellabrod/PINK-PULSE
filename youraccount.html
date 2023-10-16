@@ -134,10 +134,10 @@ const db = getDatabase();
         const checkAuthState = async() => {
             onAuthStateChanged(auth, user => {
                 if(user) {
-              
+              // if user is autheticated print email and uid in console
                     console.log(user.email)
                     console.log(user.uid)
-                    
+                    // print users email and uid in the html elements
                     document.getElementById('printEmail').innerText  = user.email
                     document.getElementById('printUid').innerText  = user.uid
                     authForm.style.display = 'none';

@@ -23,8 +23,21 @@
   <!-- base nav bar code from https://www.w3schools.com/howto/howto_js_topnav.asp -->
   <img id="title" src="pink pulse pink name.png" width="500">
     <h2 id="authForm">please sign in at sign in page</h2>
+   
     <div id="secretContent">
-  <h2 id="authMsg" >your authenticated</h2>
+      <h2 id="check" >your authenticated</h2>
+      <div id="info">
+        
+        
+        <h2 id="info2" >welcome to PinkPulse <br> <br>  you would like to sign out  <a  href="createaccount.html" >click here</a>  <br> if you would like to update your account details <a  href="createpost.html" >click here</a><br>  and if you would like to view your account details <a  href="youraccount.html" >click here  </a><br> 
+         <br> in order to search for a users information enter there username into the search box above and then click enter, you will then be able to see that users name, bio, pronouns and there profile picture. if two users have the same name you can click the button labelled ->> in order to move along to the next user with that same name
+       
+         </h2>
+        </div>
+      
+        </div>
+
+  
   
 <div id="border">
   <div id="findDetails">
@@ -55,14 +68,43 @@
   height: auto;
 }
 
-#authMsg {
+#check {
     
   font-size: 10px;
   text-align: left;
   position: absolute;
   bottom: 8px;
+}
+
+#info {
+ 
+  margin-top: 7vh;
+  
+ 
+position: absolute;
+   top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 50vh;
+      width: 70vh;
+      background-color: rgb(255, 255, 255);
+      border: 3px solid #BF5573;
 
 }
+#info2{   
+  font-size: 15px;
+  color: #BF5573;
+  font-family: Candara;
+  position: absolute;
+   top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50vh;
+  height: 35vh;
+
+  }
+
+
 
 #usersName {
   margin-bottom: 2%;
