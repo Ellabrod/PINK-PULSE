@@ -239,29 +239,29 @@ import {
 
 
         function FindData() {
-    const dbref = ref(db, "users");
-    const nameQuery = query(dbref, orderByChild("Name"), equalTo(findName.value));
-
+    const dbref = ref(db, "users"); // reference to where users folder is in the database
+    const nameQuery = query(dbref, orderByChild("Name"), equalTo(findName.value)); // Create a query which will order the data by the "Name" field and then find the data which is equal to the value in the findName input field
+// get data from database using the query (fetch data)
     get(nameQuery)
-    .then((snapshot) => {
-        if (snapshot.exists()) {
-            const userData = snapshot.val();
-            const firstKey = Object.keys(userData)[usersIndex];
-            const firstUser = userData[firstKey];
-
-            usersName.innerHTML =  firstUser.Name;
-            findBio.innerHTML =  firstUser.Bio;
-            findPronouns.innerHTML = firstUser.Pronouns;
+    .then((snapshot) => {// if data is reseived
+        if (snapshot.exists()) {   // Check if data exists
+            const userData = snapshot.val();  //gets the data
+            const firstKey = Object.keys(userData)[usersIndex]; // find identifier for the user being searched which is based on the user index
+            const firstUser = userData[firstKey]; // the data from user being searched for
+//update html elements
+            usersName.innerHTML =  firstUser.Name; // prints the users being searched name
+            findBio.innerHTML =  firstUser.Bio;// prints the users being searched bio
+            findPronouns.innerHTML = firstUser.Pronouns; // prints the users being searched pronouns
 
             // gets the users image from firebase storage
             const storage = getStorage();
-            const imagePath = 'userImages/' + firstKey;
-            const imageRef = storageRef(storage, imagePath);
-
+            const imagePath = 'userImages/' + firstKey; // defines what the path is to the users image
+            const imageRef = storageRef(storage, imagePath); // creates a reference to the image
+// get the URl of the users image from firebase storage
             getDownloadURL(imageRef).then((url) => {
-                const userImageDiv = document.getElementById('userImage'); // 
+                const userImageDiv = document.getElementById('userImage'); //get the div for where the image goes
                 userImageDiv.innerHTML = `<img src="${url}" alt="User Image" width="200">`; 
-            }).catch((error) => {
+            }).catch((error) => {// if there is a error getting the image console log it
                 console.error('Error fetching image:', error);
             });
 
@@ -285,9 +285,15 @@ import {
 
 // changes the user index so that when this command is ran if there is another user with the same name there data will now be showen
 function nextUser() {
-  usersIndex++; 
-    FindData();
-}
+  usersIndex++; // at 1 onto the user index
+    FindData(); // run the find data function
+
+   
+  }
+
+
+
+
 
 
 
@@ -296,10 +302,12 @@ function nextUser() {
 
           // when the find data button of next user button is clicked it will the run the corrosponding command
 
-
-findBtn.addEventListener('click', FindData);
-nextUserBtn.addEventListener('click', nextUser);
+// event lisetners
+findBtn.addEventListener('click', FindData); // when findbtn clicked run find data function
+nextUserBtn.addEventListener('click', nextUser); // when next user button clicked run next user function
         
 </script>
 </body>
 </html>
+
+

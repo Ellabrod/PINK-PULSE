@@ -198,13 +198,13 @@ const db = getDatabase();
       function insertData() {
     // Get the currently authenticated user
     const user = getAuth().currentUser;
-    if( enterName.value == "") {
+    if( enterName.value == "") { // has the user entered a username and if not show a alert asking them to
       alert("please enter a username") }
 
-    else if (user) {
+    else if (user) { // if the user has entered a username and is authenticated
         // Use the user's UID as the key in the database
         const uid = user.uid;
-
+// set user data in firebase
         set(ref(db, "users/" + uid), {
           Name: enterName.value,
           Bio: enterBio.value,
@@ -229,38 +229,38 @@ const db = getDatabase();
 
      
 // when the insert button is clicked both the functions insert data and upload image will run
-      insertBtn.addEventListener('click', insertData);
+      insertBtn.addEventListener('click', insertData); 
       insertBtn.addEventListener('click', uploadImage);
 
         function uploadImage() {
 
     const user = getAuth().currentUser; // declares the current user
 
-    if (user) {
+    if (user) { // if user is authenticated
         const uid = user.uid; //decleares uid as the current users uid
-        const imageFile = document.getElementById('imageUpload').files[0];
+        const imageFile = document.getElementById('imageUpload').files[0];// get the image file from the input element image upload
 
-        if (imageFile) {
-            const storage = getStorage();  // declares stoage means the get storage function
-            const imageStorageRef = storageRef(storage, 'userImages/' + uid); // saves the image in storage in a file called user images with the users uid as there name 
+        if (imageFile) { // if file selected
+            const storage = getStorage(); 
+            const imageStorageRef = storageRef(storage, 'userImages/' + uid); // Create a reference in storage for the user's images using their UID 
 
-            const uploadTask = uploadBytesResumable(imageStorageRef, imageFile);
+            const uploadTask = uploadBytesResumable(imageStorageRef, imageFile); // create a upload task which will upload the selected image
 
             uploadTask.on('state_changed', 
                 (snapshot) => {
-                    // You can use this section to show upload progress if you want
+                   
                 }, 
                 (error) => {// alerts me of a error in a alert and in console
-                    alert('Error uploading image: ', error);
-                    console.error('Error uploading image:', error);
+                    alert('Error uploading image: ', error); // alert with error msg
+                    console.error('Error uploading image:', error); // log error msg
                 }, 
-                () => {
-                   // console logs when the image has been successfully added to storage
-                    console.log('Image uploaded successfully!');
+                () => { // run when the image has been successfully uploaded
+                  
+                    console.log('Image uploaded successfully!');  // console logs when the image has been successfully added to storage
                 }
             );
         } else {
-            alert('Please select an image to upload.');
+            alert('Please select an image to upload.'); // if no file is selected show this in a alert
         } } }
 
         // declaring variables
@@ -389,7 +389,7 @@ const db = getDatabase();
   
   
   
-  var quizQuestions = [ //an array
+  var quizQuestions = [ //an array storing quiz questions
   {question: "what is 1+1" ,
   choices: ["2", "4", "6"],
   answer: "2"},
@@ -421,17 +421,17 @@ const db = getDatabase();
 
   function submitQuestion() {
   
-  if( userInput.value == "") {
-    alert("Answer the question, you egg!") }
+  if( userInput.value == "") { // if there is no answer (left blank) sent alert asking them to answer
+    alert("Answer the question!") }
 
 
-    else if(userInput.value == quizQuestions[questionState]['answer']) {
-      score++
+    else if(userInput.value == quizQuestions[questionState]['answer']) { // if the user gets the question correct (what user put into input is equal to the answers)
+      score++ // adds one onto the score
 
-    update2()
+    update2() // run update function moving onto next question
 
        } else{
-        update2()
+        update2() // move onto next question if you got it wrong but nothing is added to your score
        }}
 
   
@@ -440,28 +440,20 @@ const db = getDatabase();
     if(questionState == 4) { //once finished questions hide quiz
       quiz.style.display = "none";
       navBar.style.display = "block";
-
-      
-     
-
   
-  
-  if (score > 2) {
-
+  if (score > 2) { // if your score is greater then 2
+ 
     alert("You have signed in successfully!");
     message.innerHTML = "you have proven you are human with a score of " + score
     secretContent.style.display = 'block';
-    
-    
 // when the user scores more then 3 (score 2) they will then be able to see the secret content
   }
   
-  if (score <= 2) {
-    notHuman.innerHTML = "retry"
+  if (score <= 2) { // if score is or less then 2
+    notHuman.innerHTML = "retry" 
     
    
-    userSignOut()
-    
+    userSignOut() // the user is signed out
     
 // when the user scores less then 3 (score 2) they will be signed out and unable to view to hidden content
    
@@ -470,8 +462,8 @@ const db = getDatabase();
        }
        
        // this code changes the question and the choices every time the update2 function is ran which runs when a answer is submitted
-         questionState++ 
-         choiceState++
+         questionState++ // adds one to the question state
+         choiceState++// adds one to the choice state
            questionSpace.innerHTML = quizQuestions[questionState]['question']; // fills the question space with whatever question is detirment by the above code
            choiceSpace.innerHTML = quizQuestions[choiceState]['choices'];// fills the choice space with whatever choice is detirment by the above code
            userInput.value = "" // sets the input feild to emtey when the question changes 
